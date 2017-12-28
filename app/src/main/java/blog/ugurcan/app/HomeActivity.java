@@ -1,7 +1,6 @@
 package blog.ugurcan.app;
 
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
 
 import blog.ugurcan.firedroid.FireDroidActivity;
@@ -12,9 +11,8 @@ import blog.ugurcan.firedroid.FireDroidActivity;
 public class HomeActivity extends FireDroidActivity {
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState,
-                         @Nullable PersistableBundle persistentState) {
-        super.onCreate(savedInstanceState, persistentState);
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
     }
