@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "855940602590",
+    "firebase_url": "https://firedroid-app.firebaseio.com",
+    "project_id": "firedroid-app",
+    "storage_bucket": "firedroid-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:855940602590:android:93a776d43b571756",
+        "android_client_info": {
+          "package_name": "blog.ugurcan.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "855940602590-i6v74b9g10620uh52v6j3pn25pac8o7u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD4cdOwAeg3HCC-txHScfOKw3twWO1Kri4"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
