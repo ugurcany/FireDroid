@@ -4,11 +4,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="@dimen/activity_padding"
-    android:gravity="center_horizontal"
+    android:gravity="center"
     android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/textview_username"
+    <blog.ugurcan.firedroid.view.GoogleLoginButton
+        android:id="@+id/button_google_login"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 

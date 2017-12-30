@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">FireDroid</string>
+    <string name="login">Login</string>
 </resources>
