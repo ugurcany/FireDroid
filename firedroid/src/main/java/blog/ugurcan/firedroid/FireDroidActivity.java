@@ -48,7 +48,6 @@ public abstract class FireDroidActivity extends AppCompatActivity {
         Log.d(getName(), "onStop()");
 
         FireDroid.auth().removeAuthStateListener();
-        //FireDroid.nullifyCurrentActivity();
     }
 
     @Override

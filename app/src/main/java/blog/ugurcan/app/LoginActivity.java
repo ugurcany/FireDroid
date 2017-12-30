@@ -8,21 +8,12 @@ import android.widget.Toast;
 import blog.ugurcan.firedroid.FireDroid;
 import blog.ugurcan.firedroid.FireDroidActivity;
 import blog.ugurcan.firedroid.auth.LoginListener;
-import blog.ugurcan.firedroid.view.GoogleLoginButton;
-import butterknife.BindString;
-import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
  * Created by ugurcan on 30.12.2017.
  */
 public class LoginActivity extends FireDroidActivity implements LoginListener {
-
-    @BindView(R.id.button_google_login)
-    GoogleLoginButton googleLoginButton;
-
-    @BindString(R.string.google_web_client_id)
-    String googleWebClientId;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

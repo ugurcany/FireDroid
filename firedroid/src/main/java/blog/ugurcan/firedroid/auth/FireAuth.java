@@ -165,9 +165,9 @@ public class FireAuth implements GoogleApiClient.OnConnectionFailedListener {
 
         List<String> providers = getAuthProviders();
         if (providers != null && providers.size() > 0) {
-            if (providers.get(0).contains("google")) {
+            if (providers.get(0).equals(GoogleAuthProvider.PROVIDER_ID)) {
                 return AuthType.Google;
-            } else if (providers.get(0).contains("facebook")) {
+            } else if (providers.get(0).equals(FacebookAuthProvider.PROVIDER_ID)) {
                 return AuthType.Facebook;
             }
         }
