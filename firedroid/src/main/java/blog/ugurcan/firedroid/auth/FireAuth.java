@@ -4,6 +4,12 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.widget.Toast;
 
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.FacebookSdk;
+import com.facebook.login.LoginManager;
+import com.facebook.login.LoginResult;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -23,6 +29,7 @@ import com.google.firebase.auth.GoogleAuthProvider;
 import java.util.List;
 
 import blog.ugurcan.firedroid.FireDroid;
+import blog.ugurcan.firedroid.view.FacebookLoginButton;
 
 /**
  * Created by ugurcan on 30.12.2017.
@@ -31,8 +38,11 @@ public class FireAuth implements GoogleApiClient.OnConnectionFailedListener {
 
     private final static int REQUEST_GOOGLE_LOGIN = 9001;
 
+    private Class loginActivityClass;
+
     private FirebaseAuth.AuthStateListener authStateListener;
     private GoogleSignInClient googleSignInClient;
+    private CallbackManager fbCallbackManager;
 
     private LoginListener loginListener;
     private LogoutListener logoutListener;
@@ -41,23 +51,47 @@ public class FireAuth implements GoogleApiClient.OnConnectionFailedListener {
         authStateListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                if (isLoggedIn() && FireDroid.isOnLoginActivity()) {
+                if (isLoggedIn() && isOnLoginActivity()) {
                     FireDroid.currentActivity().finish();
-                } else if (!isLoggedIn() && !FireDroid.isOnLoginActivity()) {
-                    FireDroid.goToLogin();
+                } else if (!isLoggedIn() && !isOnLoginActivity()) {
+                    goToLogin();
                 }
             }
         };
     }
 
-    public void init(String googleWebClientId) {
+    private boolean isOnLoginActivity() {
+        return FireDroid.currentActivity().getClass().equals(loginActivityClass);
+    }
+
+    private void goToLogin() {
+        FireDroid.appContext().startActivity(
+                new Intent(FireDroid.currentActivity(), loginActivityClass));
+    }
+
+    public FireAuth google(String googleWebClientId) {
         GoogleSignInOptions gso = new GoogleSignInOptions
                 .Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(googleWebClientId)
                 .requestEmail()
                 .build();
 
-        googleSignInClient = GoogleSignIn.getClient(FireDroid.context(), gso);
+        googleSignInClient = GoogleSignIn.getClient(FireDroid.appContext(), gso);
+
+        return this;
+    }
+
+    public FireAuth facebook(String facebookAppId) {
+        FacebookSdk.setApplicationId(facebookAppId);
+        FacebookSdk.sdkInitialize(FireDroid.appContext());
+
+        fbCallbackManager = CallbackManager.Factory.create();
+
+        return this;
+    }
+
+    public void init(Class loginActivityClass) {
+        this.loginActivityClass = loginActivityClass;
     }
 
     public void setLoginListener(LoginListener loginListener) {
@@ -89,21 +123,37 @@ public class FireAuth implements GoogleApiClient.OnConnectionFailedListener {
         }
     }
 
-    public void logIn(AuthType authType) {
-        switch (authType) {
-            case Google:
-                Intent signInIntent = googleSignInClient.getSignInIntent();
-                FireDroid.currentActivity()
-                        .startActivityForResult(signInIntent, FireAuth.REQUEST_GOOGLE_LOGIN);
-                break;
-            /*case Facebook:
-                facebookAuthInteractor.signOut(this);
-                break;*/
-        }
+    public void logInGoogle() {
+        Intent signInIntent = googleSignInClient.getSignInIntent();
+        FireDroid.currentActivity()
+                .startActivityForResult(signInIntent, FireAuth.REQUEST_GOOGLE_LOGIN);
     }
 
-    public void handleLoginResult(int requestCode, Intent data) {
-        if (requestCode == FireAuth.REQUEST_GOOGLE_LOGIN) {
+    public void logInFacebook(FacebookLoginButton fbLoginButton) {
+        FacebookCallback<LoginResult> fbCallback = new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+                authWith(AuthType.Facebook, loginResult.getAccessToken().getToken());
+            }
+
+            @Override
+            public void onCancel() {
+                loginListener.onLoginCompleted(false);
+            }
+
+            @Override
+            public void onError(FacebookException error) {
+                loginListener.onLoginCompleted(false);
+            }
+        };
+
+        fbLoginButton.registerCallback(fbCallbackManager, fbCallback);
+    }
+
+    public void handleLoginResult(int requestCode, int resultCode, Intent data) {
+        if (FacebookSdk.isFacebookRequestCode(requestCode)) {
+            fbCallbackManager.onActivityResult(requestCode, resultCode, data);
+        } else if (requestCode == FireAuth.REQUEST_GOOGLE_LOGIN) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             try {
                 GoogleSignInAccount account = task.getResult(ApiException.class);
@@ -152,9 +202,12 @@ public class FireAuth implements GoogleApiClient.OnConnectionFailedListener {
                             }
                         });
                 break;
-            /*case Facebook:
-                facebookAuthInteractor.signOut(this);
-                break;*/
+            case Facebook:
+                logoutListener.onLogoutStarted();
+                LoginManager.getInstance().logOut();
+                logoutListener.onLogoutCompleted();
+                FirebaseAuth.getInstance().signOut();
+                break;
         }
     }
 
@@ -186,7 +239,7 @@ public class FireAuth implements GoogleApiClient.OnConnectionFailedListener {
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        Toast.makeText(FireDroid.context(), "Google Play Services error!",
+        Toast.makeText(FireDroid.appContext(), "Google Play Services error!",
                 Toast.LENGTH_SHORT).show();
     }
 

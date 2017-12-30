@@ -2,7 +2,6 @@ package blog.ugurcan.firedroid;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 
 import java.lang.ref.WeakReference;
 
@@ -13,15 +12,13 @@ import blog.ugurcan.firedroid.auth.FireAuth;
  */
 public class FireDroid {
 
-    private static WeakReference<Context> mContext;
+    private static WeakReference<Context> mAppContext;
     private static WeakReference<Activity> mCurrentActivity;
-    private static Class mLoginActivityClass;
 
     private static FireAuth auth;
 
-    public static void init(Context appContext, Class loginActivityClass) {
-        mContext = new WeakReference<>(appContext);
-        mLoginActivityClass = loginActivityClass;
+    public static void init(Context appContext) {
+        mAppContext = new WeakReference<>(appContext);
     }
 
     public static FireAuth auth() {
@@ -31,17 +28,8 @@ public class FireDroid {
         return auth;
     }
 
-    public static Context context() {
-        return mContext.get();
-    }
-
-    public static void goToLogin() {
-        Intent intent = new Intent(FireDroid.currentActivity(), mLoginActivityClass);
-        context().startActivity(intent);
-    }
-
-    public static boolean isOnLoginActivity() {
-        return currentActivity().getClass().equals(mLoginActivityClass);
+    public static Context appContext() {
+        return mAppContext.get();
     }
 
     public static Activity currentActivity() {

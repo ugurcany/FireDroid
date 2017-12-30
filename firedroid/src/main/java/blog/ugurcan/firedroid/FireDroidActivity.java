@@ -59,7 +59,7 @@ public abstract class FireDroidActivity extends AppCompatActivity {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        FireDroid.auth().handleLoginResult(requestCode, data);
+        FireDroid.auth().handleLoginResult(requestCode, resultCode, data);
     }
 
     public void showDialog(String message) {

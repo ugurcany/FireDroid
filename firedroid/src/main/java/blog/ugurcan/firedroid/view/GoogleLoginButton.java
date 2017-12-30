@@ -11,7 +11,6 @@ import android.widget.FrameLayout;
 import com.google.android.gms.common.SignInButton;
 
 import blog.ugurcan.firedroid.FireDroid;
-import blog.ugurcan.firedroid.auth.FireAuth;
 
 /**
  * Created by ugurcan on 30.12.2017.
@@ -42,7 +41,7 @@ public class GoogleLoginButton extends FrameLayout implements View.OnClickListen
 
     @Override
     public void onClick(View v) {
-        FireDroid.auth().logIn(FireAuth.AuthType.Google);
+        FireDroid.auth().logInGoogle();
     }
 
 }

@@ -8,7 +8,14 @@
     android:orientation="vertical">
 
     <blog.ugurcan.firedroid.view.GoogleLoginButton
-        android:id="@+id/button_google_login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <android.support.v4.widget.Space
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"/>
+
+    <blog.ugurcan.firedroid.view.FacebookLoginButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 

@@ -13,8 +13,11 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
 
-        FireDroid.init(this, LoginActivity.class);
-        FireDroid.auth().init(getString(R.string.google_web_client_id));
+        FireDroid.init(getApplicationContext());
+        FireDroid.auth()
+                .google(getString(R.string.google_web_client_id))
+                .facebook(getString(R.string.facebook_app_id))
+                .init(LoginActivity.class);
     }
 
 }
