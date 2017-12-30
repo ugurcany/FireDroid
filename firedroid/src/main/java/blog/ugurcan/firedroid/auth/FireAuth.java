@@ -25,11 +25,23 @@ import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.auth.TwitterAuthProvider;
+import com.twitter.sdk.android.core.Callback;
+import com.twitter.sdk.android.core.Result;
+import com.twitter.sdk.android.core.Twitter;
+import com.twitter.sdk.android.core.TwitterAuthConfig;
+import com.twitter.sdk.android.core.TwitterAuthToken;
+import com.twitter.sdk.android.core.TwitterConfig;
+import com.twitter.sdk.android.core.TwitterCore;
+import com.twitter.sdk.android.core.TwitterException;
+import com.twitter.sdk.android.core.TwitterSession;
+import com.twitter.sdk.android.core.identity.TwitterAuthClient;
 
 import java.util.List;
 
 import blog.ugurcan.firedroid.FireDroid;
 import blog.ugurcan.firedroid.view.FacebookLoginButton;
+import blog.ugurcan.firedroid.view.TwitterLoginButton;
 
 /**
  * Created by ugurcan on 30.12.2017.
@@ -43,6 +55,7 @@ public class FireAuth implements GoogleApiClient.OnConnectionFailedListener {
     private FirebaseAuth.AuthStateListener authStateListener;
     private GoogleSignInClient googleSignInClient;
     private CallbackManager fbCallbackManager;
+    private TwitterAuthClient twitterAuthClient;
 
     private LoginListener loginListener;
     private LogoutListener logoutListener;
@@ -81,11 +94,27 @@ public class FireAuth implements GoogleApiClient.OnConnectionFailedListener {
         return this;
     }
 
-    public FireAuth facebook(String facebookAppId) {
-        FacebookSdk.setApplicationId(facebookAppId);
+    public FireAuth facebook(String fbAppId) {
+        FacebookSdk.setApplicationId(fbAppId);
         FacebookSdk.sdkInitialize(FireDroid.appContext());
 
         fbCallbackManager = CallbackManager.Factory.create();
+
+        return this;
+    }
+
+    public FireAuth twitter(String twitterKey, String twitterSecret) {
+        TwitterAuthConfig twitterAuthConfig
+                = new TwitterAuthConfig(twitterKey, twitterSecret);
+
+        TwitterConfig twitterConfig = new TwitterConfig
+                .Builder(FireDroid.appContext())
+                .twitterAuthConfig(twitterAuthConfig)
+                .build();
+
+        Twitter.initialize(twitterConfig);
+
+        twitterAuthClient = new TwitterAuthClient();
 
         return this;
     }
@@ -133,7 +162,7 @@ public class FireAuth implements GoogleApiClient.OnConnectionFailedListener {
         FacebookCallback<LoginResult> fbCallback = new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
-                authWith(AuthType.Facebook, loginResult.getAccessToken().getToken());
+                authWith(AuthType.Facebook, loginResult.getAccessToken().getToken(), null);
             }
 
             @Override
@@ -150,6 +179,23 @@ public class FireAuth implements GoogleApiClient.OnConnectionFailedListener {
         fbLoginButton.registerCallback(fbCallbackManager, fbCallback);
     }
 
+    public void logInTwitter(TwitterLoginButton twitterLoginButton) {
+        Callback<TwitterSession> twitterCallback = new Callback<TwitterSession>() {
+            @Override
+            public void success(Result<TwitterSession> result) {
+                TwitterAuthToken twitterAuthToken = result.data.getAuthToken();
+                authWith(AuthType.Twitter, twitterAuthToken.token, twitterAuthToken.secret);
+            }
+
+            @Override
+            public void failure(TwitterException exception) {
+                loginListener.onLoginCompleted(false);
+            }
+        };
+
+        twitterLoginButton.setCallback(twitterCallback);
+    }
+
     public void handleLoginResult(int requestCode, int resultCode, Intent data) {
         if (FacebookSdk.isFacebookRequestCode(requestCode)) {
             fbCallbackManager.onActivityResult(requestCode, resultCode, data);
@@ -157,14 +203,16 @@ public class FireAuth implements GoogleApiClient.OnConnectionFailedListener {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             try {
                 GoogleSignInAccount account = task.getResult(ApiException.class);
-                authWith(AuthType.Google, account.getIdToken());
+                authWith(AuthType.Google, account.getIdToken(), null);
             } catch (ApiException e) {
                 loginListener.onLoginCompleted(false);
             }
+        } else if (Twitter.getInstance().getTwitterAuthConfig().getRequestCode() == requestCode) {
+            twitterAuthClient.onActivityResult(requestCode, resultCode, data);
         }
     }
 
-    private void authWith(AuthType authType, String token) {
+    private void authWith(AuthType authType, String token, String secret) {
         loginListener.onLoginStarted();
 
         AuthCredential credential;
@@ -174,6 +222,9 @@ public class FireAuth implements GoogleApiClient.OnConnectionFailedListener {
                 break;
             case Facebook:
                 credential = FacebookAuthProvider.getCredential(token);
+                break;
+            case Twitter:
+                credential = TwitterAuthProvider.getCredential(token, secret);
                 break;
             default:
                 return;
@@ -208,20 +259,29 @@ public class FireAuth implements GoogleApiClient.OnConnectionFailedListener {
                 logoutListener.onLogoutCompleted();
                 FirebaseAuth.getInstance().signOut();
                 break;
+            case Twitter:
+                logoutListener.onLogoutStarted();
+                TwitterCore.getInstance().getSessionManager().clearActiveSession();
+                logoutListener.onLogoutCompleted();
+                FirebaseAuth.getInstance().signOut();
+                break;
         }
     }
 
-    private AuthType getAuthType() {
+    public AuthType getAuthType() {
         if (!isLoggedIn()) {
             return AuthType.NONE;
         }
 
         List<String> providers = getAuthProviders();
         if (providers != null && providers.size() > 0) {
-            if (providers.get(0).equals(GoogleAuthProvider.PROVIDER_ID)) {
-                return AuthType.Google;
-            } else if (providers.get(0).equals(FacebookAuthProvider.PROVIDER_ID)) {
-                return AuthType.Facebook;
+            switch (providers.get(0)) {
+                case GoogleAuthProvider.PROVIDER_ID:
+                    return AuthType.Google;
+                case FacebookAuthProvider.PROVIDER_ID:
+                    return AuthType.Facebook;
+                case TwitterAuthProvider.PROVIDER_ID:
+                    return AuthType.Twitter;
             }
         }
 
@@ -244,7 +304,7 @@ public class FireAuth implements GoogleApiClient.OnConnectionFailedListener {
     }
 
     public enum AuthType {
-        Google, Facebook, UNIDENTIFIED, NONE;
+        Google, Facebook, Twitter, UNIDENTIFIED, NONE;
     }
 
 }

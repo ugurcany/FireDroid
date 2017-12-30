@@ -35,4 +35,5 @@ dependencies {
     compile 'com.google.firebase:firebase-auth:11.8.0'
     compile 'com.google.android.gms:play-services-auth:11.8.0'
     implementation 'com.facebook.android:facebook-android-sdk:[4,5)'
+    implementation 'com.twitter.sdk.android:twitter-core:3.1.1'
 }

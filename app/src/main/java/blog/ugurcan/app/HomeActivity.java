@@ -18,8 +18,8 @@ import butterknife.ButterKnife;
  */
 public class HomeActivity extends FireDroidActivity implements LogoutListener {
 
-    @BindView(R.id.textview_username)
-    TextView textviewUsername;
+    @BindView(R.id.textview_user)
+    TextView textviewUser;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -49,7 +49,8 @@ public class HomeActivity extends FireDroidActivity implements LogoutListener {
     @Override
     protected void onStart() {
         super.onStart();
-        textviewUsername.setText(FireDroid.auth().getUserDisplayName());
+        textviewUser.setText(FireDroid.auth().getUserDisplayName() + " / "
+                + FireDroid.auth().getAuthType());
     }
 
     @Override

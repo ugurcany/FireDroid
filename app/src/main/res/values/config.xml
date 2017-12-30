@@ -3,5 +3,7 @@
 
     <string name="google_web_client_id">855940602590-i6v74b9g10620uh52v6j3pn25pac8o7u.apps.googleusercontent.com</string>
     <string name="facebook_app_id">1266385466799002</string>
+    <string name="twitter_key">CVccs67FMXjU9YcsnFdmfsaaW</string>
+    <string name="twitter_secret">bYyBNCYIZkczmMnO9TcVGz2nMOBLPIfW3iaLmDCgth88vFrLZK</string>
 
 </resources>
