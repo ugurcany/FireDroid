@@ -11,6 +11,9 @@ android:
   licenses:
       - android-sdk-license-.+
 
+script:
+  - chmod +x ./gradlew build connectedCheck
+
 before_install:
   - yes | sdkmanager "platforms;android-27"
 
