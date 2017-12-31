@@ -4,8 +4,11 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.squareup.picasso.Picasso;
 
 import blog.ugurcan.firedroid.FireDroid;
 import blog.ugurcan.firedroid.FireDroidActivity;
@@ -17,9 +20,6 @@ import butterknife.ButterKnife;
  * Created by ugurcan on 28.12.2017.
  */
 public class HomeActivity extends FireDroidActivity implements LogoutListener {
-
-    @BindView(R.id.textview_user)
-    TextView textviewUser;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -49,8 +49,7 @@ public class HomeActivity extends FireDroidActivity implements LogoutListener {
     @Override
     protected void onStart() {
         super.onStart();
-        textviewUser.setText(FireDroid.auth().getUserDisplayName() + " / "
-                + FireDroid.auth().getAuthType());
+        updateUI();
     }
 
     @Override
@@ -69,5 +68,27 @@ public class HomeActivity extends FireDroidActivity implements LogoutListener {
         Toast.makeText(this, "Successfully logged out!",
                 Toast.LENGTH_SHORT).show();
     }
+
+    private void updateUI(){
+        Picasso.with(this)
+                .load(FireDroid.auth().getUserImageUrl())
+                .into(imageviewUser);
+
+        textviewUserDisplayName.setText(FireDroid.auth().getUserDisplayName());
+        textviewUserEmail.setText(FireDroid.auth().getUserEmail());
+        textviewUserPhone.setText(FireDroid.auth().getUserPhone());
+        textviewAuthType.setText(FireDroid.auth().getAuthType().toString());
+    }
+
+    @BindView(R.id.textview_user_display_name)
+    TextView textviewUserDisplayName;
+    @BindView(R.id.textview_user_email)
+    TextView textviewUserEmail;
+    @BindView(R.id.textview_user_phone)
+    TextView textviewUserPhone;
+    @BindView(R.id.textview_auth_type)
+    TextView textviewAuthType;
+    @BindView(R.id.imageview_user)
+    ImageView imageviewUser;
 
 }

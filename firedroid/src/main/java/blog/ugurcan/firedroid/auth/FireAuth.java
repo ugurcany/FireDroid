@@ -1,6 +1,7 @@
 package blog.ugurcan.firedroid.auth;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.widget.Toast;
 
@@ -107,10 +108,37 @@ public class FireAuth implements GoogleApiClient.OnConnectionFailedListener {
         return FirebaseAuth.getInstance().getCurrentUser() != null;
     }
 
+    public Uri getUserImageUrl() {
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (currentUser != null) {
+            return currentUser.getPhotoUrl();
+        } else {
+            return null;
+        }
+    }
+
     public String getUserDisplayName() {
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         if (currentUser != null) {
             return currentUser.getDisplayName();
+        } else {
+            return "-";
+        }
+    }
+
+    public String getUserEmail() {
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (currentUser != null) {
+            return currentUser.getEmail();
+        } else {
+            return "-";
+        }
+    }
+
+    public String getUserPhone() {
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (currentUser != null) {
+            return currentUser.getPhoneNumber();
         } else {
             return "-";
         }
