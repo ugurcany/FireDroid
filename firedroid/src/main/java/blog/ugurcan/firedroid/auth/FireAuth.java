@@ -50,9 +50,9 @@ public class FireAuth implements GoogleApiClient.OnConnectionFailedListener {
 
     private final static int REQUEST_GOOGLE_LOGIN = 9001;
 
-    private Class loginActivityClass;
-
     private FirebaseAuth.AuthStateListener authStateListener;
+
+    private Class loginActivityClass;
     private GoogleSignInClient googleSignInClient;
     private CallbackManager fbCallbackManager;
     private TwitterAuthClient twitterAuthClient;
@@ -60,7 +60,12 @@ public class FireAuth implements GoogleApiClient.OnConnectionFailedListener {
     private LoginListener loginListener;
     private LogoutListener logoutListener;
 
-    public FireAuth() {
+    FireAuth(Initializer initializer) {
+        this.loginActivityClass = initializer.loginActivityClass;
+        this.googleSignInClient = initializer.googleSignInClient;
+        this.fbCallbackManager = initializer.fbCallbackManager;
+        this.twitterAuthClient = initializer.twitterAuthClient;
+
         authStateListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
@@ -80,47 +85,6 @@ public class FireAuth implements GoogleApiClient.OnConnectionFailedListener {
     private void goToLogin() {
         FireDroid.appContext().startActivity(
                 new Intent(FireDroid.currentActivity(), loginActivityClass));
-    }
-
-    public FireAuth google(String googleWebClientId) {
-        GoogleSignInOptions gso = new GoogleSignInOptions
-                .Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(googleWebClientId)
-                .requestEmail()
-                .build();
-
-        googleSignInClient = GoogleSignIn.getClient(FireDroid.appContext(), gso);
-
-        return this;
-    }
-
-    public FireAuth facebook(String fbAppId) {
-        FacebookSdk.setApplicationId(fbAppId);
-        FacebookSdk.sdkInitialize(FireDroid.appContext());
-
-        fbCallbackManager = CallbackManager.Factory.create();
-
-        return this;
-    }
-
-    public FireAuth twitter(String twitterKey, String twitterSecret) {
-        TwitterAuthConfig twitterAuthConfig
-                = new TwitterAuthConfig(twitterKey, twitterSecret);
-
-        TwitterConfig twitterConfig = new TwitterConfig
-                .Builder(FireDroid.appContext())
-                .twitterAuthConfig(twitterAuthConfig)
-                .build();
-
-        Twitter.initialize(twitterConfig);
-
-        twitterAuthClient = new TwitterAuthClient();
-
-        return this;
-    }
-
-    public void init(Class loginActivityClass) {
-        this.loginActivityClass = loginActivityClass;
     }
 
     public void setLoginListener(LoginListener loginListener) {
@@ -303,8 +267,62 @@ public class FireAuth implements GoogleApiClient.OnConnectionFailedListener {
                 Toast.LENGTH_SHORT).show();
     }
 
-    public enum AuthType {
-        Google, Facebook, Twitter, UNIDENTIFIED, NONE;
+
+    public static class Initializer {
+
+        private Class loginActivityClass;
+
+        private GoogleSignInClient googleSignInClient;
+        private CallbackManager fbCallbackManager;
+        private TwitterAuthClient twitterAuthClient;
+
+        public Initializer(Class loginActivityClass) {
+            this.loginActivityClass = loginActivityClass;
+        }
+
+        public Initializer google(String googleWebClientId) {
+            GoogleSignInOptions gso = new GoogleSignInOptions
+                    .Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                    .requestIdToken(googleWebClientId)
+                    .requestEmail()
+                    .build();
+
+            googleSignInClient = GoogleSignIn.getClient(FireDroid.appContext(), gso);
+
+            return this;
+        }
+
+        public Initializer facebook(String fbAppId) {
+            FacebookSdk.setApplicationId(fbAppId);
+            FacebookSdk.sdkInitialize(FireDroid.appContext());
+
+            fbCallbackManager = CallbackManager.Factory.create();
+
+            return this;
+        }
+
+        public Initializer twitter(String twitterKey, String twitterSecret) {
+            TwitterAuthConfig twitterAuthConfig
+                    = new TwitterAuthConfig(twitterKey, twitterSecret);
+
+            TwitterConfig twitterConfig = new TwitterConfig
+                    .Builder(FireDroid.appContext())
+                    .twitterAuthConfig(twitterAuthConfig)
+                    .build();
+
+            Twitter.initialize(twitterConfig);
+
+            twitterAuthClient = new TwitterAuthClient();
+
+            return this;
+        }
+
+        public FireAuth init() {
+            FireAuth auth = new FireAuth(this);
+            FireDroid.setAuth(auth);
+            return auth;
+        }
+
     }
 
 }

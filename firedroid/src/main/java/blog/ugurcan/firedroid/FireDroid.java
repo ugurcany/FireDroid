@@ -15,17 +15,22 @@ public class FireDroid {
     private static WeakReference<Context> mAppContext;
     private static WeakReference<Activity> mCurrentActivity;
 
-    private static FireAuth auth;
+    private static FireAuth mAuth;
 
     public static void init(Context appContext) {
         mAppContext = new WeakReference<>(appContext);
     }
 
+    public static FireAuth.Initializer authInitializer(Class loginActivityClass) {
+        return new FireAuth.Initializer(loginActivityClass);
+    }
+
     public static FireAuth auth() {
-        if (auth == null) {
-            auth = new FireAuth();
-        }
-        return auth;
+        return mAuth;
+    }
+
+    public static void setAuth(FireAuth auth){
+        mAuth = auth;
     }
 
     public static Context appContext() {

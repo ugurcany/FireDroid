@@ -14,11 +14,11 @@ public class App extends Application {
         super.onCreate();
 
         FireDroid.init(getApplicationContext());
-        FireDroid.auth()
+        FireDroid.authInitializer(LoginActivity.class)
                 .google(getString(R.string.google_web_client_id))
                 .facebook(getString(R.string.facebook_app_id))
                 .twitter(getString(R.string.twitter_key), getString(R.string.twitter_secret))
-                .init(LoginActivity.class);
+                .init();
     }
 
 }
