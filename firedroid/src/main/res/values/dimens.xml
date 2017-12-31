@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <dimen name="login_button_padding">10dp</dimen>
+    <integer name="login_button_padding">10</integer>
     <integer name="login_button_textsize">14</integer>
 
 </resources>

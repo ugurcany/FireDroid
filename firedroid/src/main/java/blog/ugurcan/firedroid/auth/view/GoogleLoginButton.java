@@ -1,4 +1,4 @@
-package blog.ugurcan.firedroid.view;
+package blog.ugurcan.firedroid.auth.view;
 
 import android.content.Context;
 import android.support.annotation.AttrRes;
@@ -35,13 +35,14 @@ public class GoogleLoginButton extends FrameLayout implements View.OnClickListen
     private void init() {
         SignInButton signInButton = new SignInButton(getContext());
         signInButton.setSize(SignInButton.SIZE_WIDE);
-        signInButton.setOnClickListener(this);
         addView(signInButton);
+
+        signInButton.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
-        FireDroid.auth().logInGoogle();
+        FireDroid.login().withGoogle();
     }
 
 }

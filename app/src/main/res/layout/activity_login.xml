@@ -7,7 +7,7 @@
     android:gravity="center"
     android:orientation="vertical">
 
-    <blog.ugurcan.firedroid.view.GoogleLoginButton
+    <blog.ugurcan.firedroid.auth.view.GoogleLoginButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 
@@ -15,7 +15,7 @@
         android:layout_width="wrap_content"
         android:layout_height="20dp"/>
 
-    <blog.ugurcan.firedroid.view.FacebookLoginButton
+    <blog.ugurcan.firedroid.auth.view.FacebookLoginButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 
@@ -23,7 +23,7 @@
         android:layout_width="wrap_content"
         android:layout_height="20dp"/>
 
-    <blog.ugurcan.firedroid.view.TwitterLoginButton
+    <blog.ugurcan.firedroid.auth.view.TwitterLoginButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 

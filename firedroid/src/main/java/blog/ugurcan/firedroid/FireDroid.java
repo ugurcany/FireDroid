@@ -6,6 +6,9 @@ import android.content.Context;
 import java.lang.ref.WeakReference;
 
 import blog.ugurcan.firedroid.auth.FireAuth;
+import blog.ugurcan.firedroid.auth.IFireAuth;
+import blog.ugurcan.firedroid.auth.ILogin;
+import blog.ugurcan.firedroid.auth._IFireAuth;
 
 /**
  * Created by ugurcan on 28.12.2017.
@@ -15,7 +18,7 @@ public class FireDroid {
     private static WeakReference<Context> mAppContext;
     private static WeakReference<Activity> mCurrentActivity;
 
-    private static FireAuth mAuth;
+    private static _IFireAuth mAuth;
 
     public static void init(Context appContext) {
         mAppContext = new WeakReference<>(appContext);
@@ -25,11 +28,19 @@ public class FireDroid {
         return new FireAuth.Initializer(loginActivityClass);
     }
 
-    public static FireAuth auth() {
+    public static IFireAuth auth() {
         return mAuth;
     }
 
-    public static void setAuth(FireAuth auth){
+    public static ILogin login() {
+        return mAuth;
+    }
+
+    static _IFireAuth _auth() {
+        return mAuth;
+    }
+
+    public static void setAuth(FireAuth auth) {
         mAuth = auth;
     }
 

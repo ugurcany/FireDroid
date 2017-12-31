@@ -25,7 +25,7 @@ public abstract class FireDroidActivity extends AppCompatActivity {
         super.onStart();
         Log.d(getName(), "onStart()");
 
-        FireDroid.auth().addAuthStateListener();
+        FireDroid._auth().addAuthStateListener();
     }
 
     @Override
@@ -47,7 +47,7 @@ public abstract class FireDroidActivity extends AppCompatActivity {
         super.onStop();
         Log.d(getName(), "onStop()");
 
-        FireDroid.auth().removeAuthStateListener();
+        FireDroid._auth().removeAuthStateListener();
     }
 
     @Override
@@ -59,7 +59,7 @@ public abstract class FireDroidActivity extends AppCompatActivity {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        FireDroid.auth().handleLoginResult(requestCode, resultCode, data);
+        FireDroid._auth().handleLoginResult(requestCode, resultCode, data);
     }
 
     public void showDialog(String message) {

@@ -1,4 +1,4 @@
-package blog.ugurcan.firedroid.view;
+package blog.ugurcan.firedroid.auth.view;
 
 import android.content.Context;
 import android.support.annotation.AttrRes;
@@ -34,16 +34,19 @@ public class FacebookLoginButton extends LoginButton {
     }
 
     private void init() {
-        int padding = getContext().getResources()
-                .getDimensionPixelSize(R.dimen.login_button_padding);
+        int padding = padding();
         setPadding(padding, padding, padding, padding);
         setTextSize(TypedValue.COMPLEX_UNIT_SP,
                 getContext().getResources().getInteger(R.integer.login_button_textsize));
         setGravity(Gravity.CENTER);
 
         setReadPermissions("email", "public_profile");
+        FireDroid.login().withFacebook(this);
+    }
 
-        FireDroid.auth().logInFacebook(this);
+    private int padding(){
+        return (int) (getResources().getInteger(R.integer.login_button_padding)
+                * getResources().getDisplayMetrics().density);
     }
 
 }

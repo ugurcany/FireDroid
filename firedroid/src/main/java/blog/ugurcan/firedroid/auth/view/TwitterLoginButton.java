@@ -1,4 +1,4 @@
-package blog.ugurcan.firedroid.view;
+package blog.ugurcan.firedroid.auth.view;
 
 import android.content.Context;
 import android.support.annotation.AttrRes;
@@ -36,7 +36,7 @@ public class TwitterLoginButton extends com.twitter.sdk.android.core.identity.Tw
                 getContext().getResources().getInteger(R.integer.login_button_textsize));
         setGravity(Gravity.CENTER);
 
-        FireDroid.auth().logInTwitter(this);
+        FireDroid.login().withTwitter(this);
     }
 
 }
