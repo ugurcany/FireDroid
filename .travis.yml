@@ -12,9 +12,10 @@ android:
       - android-sdk-license-.+
 
 script:
-  - chmod +x ./gradlew build connectedCheck
+  - ./gradlew build
 
 before_install:
+  - chmod +x gradlew
   - yes | sdkmanager "platforms;android-27"
 
 before_cache:
