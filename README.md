@@ -14,11 +14,25 @@
 
 **Step 4.** Put the `google-services.json` file (provided by Firebase) under your app module directory
 
-**Step 5.** Initialize the framework inside your application's `onCreate()` method as follows:
+**Step 5.** Initialize the framework inside your app's `onCreate()` method as follows:
 ```
 FireDroid.init(getApplicationContext());
 ```
 
 ## Authentication
 
-...
+### Setup
+
+**Step 1.** Initiliaze auth services that you want to use inside your app's `onCreate()` method as follows:
+```
+FireDroid.authInitializer(LoginActivity.class)
+		.google(getString(R.string.google_web_client_id)) //OPTIONAL
+		.facebook(getString(R.string.facebook_app_id)) //OPTIONAL
+		.twitter(getString(R.string.twitter_key), getString(R.string.twitter_secret)) //OPTIONAL
+		.init();
+```
+Here, required keys and ids you see above are obtained from respective dev/sdk websites of Google, Facebook, and Twitter.
+
+*[ ! ] If you want to use Google login, you need to add your app's SHA-1 fingerprint to the Firebase dashboard of your app.*
+
+**Step 2.** ...
