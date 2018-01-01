@@ -1,4 +1,4 @@
-# FireDroid ==[Under development]==
+# FireDroid *[Under development]*
 
 [![Build Status](https://travis-ci.org/ugurcany/FireDroid.svg?branch=develop)](https://travis-ci.org/ugurcany/FireDroid)
 
@@ -6,10 +6,19 @@
 
 ## Setup
 
-**Step 1.** Add the framework dependency ==(not released yet)== to your app level `build.gradle` file
+**Step 1.** Add the framework dependency *(not released yet)* to your app level `build.gradle` file
 
 **Step 2.** Add `apply plugin: 'com.google.gms.google-services'` at the end of your app level `build.gradle` file
 
 **Step 3.** Add the dependency `classpath 'com.google.gms:google-services:3.1.1'` to your project level `build.gradle` file
 
 **Step 4.** Put the `google-services.json` file (provided by Firebase) under your app module directory
+
+**Step 4.** Initialize the framework inside your application's `onCreate()` method as follows:
+```
+FireDroid.init(getApplicationContext());
+```
+
+## Authentication
+
+...
