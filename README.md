@@ -23,7 +23,7 @@ FireDroid.init(getApplicationContext());
 
 ### Setup
 
-**Step 1.** Initiliaze auth services that you want to use inside your app's `onCreate()` method as follows:
+Initialize auth services that you want to use inside your app's `onCreate()` method as follows:
 ```java
 FireDroid.authInitializer(LoginActivity.class)
 		.google(getString(R.string.google_web_client_id)) //OPTIONAL
@@ -31,8 +31,18 @@ FireDroid.authInitializer(LoginActivity.class)
 		.twitter(getString(R.string.twitter_key), getString(R.string.twitter_secret)) //OPTIONAL
 		.init();
 ```
-Here, required keys and ids you see above are obtained from respective dev/sdk websites of Google, Facebook, and Twitter.
 
-*[ ! ] If you want to use Google login, you need to add your app's SHA-1 fingerprint to the Firebase dashboard of your app.*
+* To the auth initializer, you need to pass the activity class (LoginActivity) that is responsible for login stuff in your app. This activity is forcibly displayed by the framework as long as user is not logged in.
 
-**Step 2.** ...
+* The keys/ids required by login processes of Google, Facebook, and Twitter are obtained from their respective dev websites. To obtain these keys/ids, follow the links below:
+	* Google: https://developers.google.com/identity/sign-in/android/start-integrating?authuser=0#get_your_backend_servers_oauth_20_client_id
+	* Facebook: https://developers.facebook.com/
+	* Twitter: https://apps.twitter.com/
+
+* If you want to use Google login, you need to add your app's SHA-1 fingerprint to the Firebase dashboard of your app.
+
+* If you want to use Facebook or Twitter login, you need to add your app's Firebase OAuth redirect URI (that can be found on Firebase dashboard) to your app's dashboard page on Facebook/Twitter dev website.
+
+* You also need to enable corresponding login methods on your app's Firebase dashboard.
+
+### ...
