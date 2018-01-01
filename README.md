@@ -4,7 +4,7 @@
 
 **FireDroid** is an architectural framework for **Android** apps that use **Firebase** services. The framework takes on the burden of integrating Firebase services to your app and helps you avoid boilerplate code.
 
-## Setup
+## Getting started
 
 **Step 1.** Add the framework dependency *(not released yet)* to your app level `build.gradle` file
 
@@ -15,7 +15,7 @@
 **Step 4.** Put the `google-services.json` file (provided by Firebase) under your app module directory
 
 **Step 5.** Initialize the framework inside your app's `onCreate()` method as follows:
-```
+```java
 FireDroid.init(getApplicationContext());
 ```
 
@@ -24,7 +24,7 @@ FireDroid.init(getApplicationContext());
 ### Setup
 
 **Step 1.** Initiliaze auth services that you want to use inside your app's `onCreate()` method as follows:
-```
+```java
 FireDroid.authInitializer(LoginActivity.class)
 		.google(getString(R.string.google_web_client_id)) //OPTIONAL
 		.facebook(getString(R.string.facebook_app_id)) //OPTIONAL
