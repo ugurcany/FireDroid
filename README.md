@@ -14,7 +14,7 @@
 
 **Step 4.** Put the `google-services.json` file (provided by Firebase) under your app module directory
 
-**Step 4.** Initialize the framework inside your application's `onCreate()` method as follows:
+**Step 5.** Initialize the framework inside your application's `onCreate()` method as follows:
 ```
 FireDroid.init(getApplicationContext());
 ```
