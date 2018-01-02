@@ -48,8 +48,8 @@ FireDroid.authInitializer(LoginActivity.class)
 ### How to use
 
 1. Make sure your login activity (the same one mentioned above) implements the `LoginListener` interface
- - This will add two methods to login activity: `onLoginStarted()` and `onLoginCompleted(isSuccessful)`.
- - You can do whatever you want inside these methods. What is recommended is blocking UI (showing dialog, etc.) when login is started and unblocking it when login is completed.
+	- This will add two methods to login activity: `onLoginStarted()` and `onLoginCompleted(isSuccessful)`.
+	- You can do whatever you want inside these methods. What is recommended is blocking UI (showing dialog, etc.) when login is started and unblocking it when login is completed.
 
 2. Call the following line of code inside login activity's `onCreate()` method:
 ```java
@@ -57,9 +57,9 @@ FireDroid.auth().setLoginListener(this);
 ```
 
 3. Add your login button(s) to the layout of login activity
- - On click method of Google login button, you simply call: `FireDroid.auth().logInWithGoogle();`
- - On click method of Facebook login button, you simply call: `FireDroid.auth().logInWithFacebook();`
- - On click method of Twitter login button, you simply call: `FireDroid.auth().logInWithTwitter();`
+	- On click method of Google login button, you simply call: `FireDroid.auth().logInWithGoogle();`
+	- On click method of Facebook login button, you simply call: `FireDroid.auth().logInWithFacebook();`
+	- On click method of Twitter login button, you simply call: `FireDroid.auth().logInWithTwitter();`
 
 And that's all... All ready and set for the login part of your app!
 
