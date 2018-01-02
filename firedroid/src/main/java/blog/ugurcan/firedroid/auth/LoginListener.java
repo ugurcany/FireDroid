@@ -7,6 +7,6 @@ public interface LoginListener {
 
     void onLoginStarted();
 
-    void onLoginCompleted(boolean isSuccess);
+    void onLoginCompleted(boolean isSuccessful);
 
 }

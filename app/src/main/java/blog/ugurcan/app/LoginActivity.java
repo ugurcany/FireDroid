@@ -47,11 +47,11 @@ public class LoginActivity extends FireDroidActivity implements LoginListener {
     }
 
     @Override
-    public void onLoginCompleted(boolean isSuccess) {
-        Log.d(getName(), "onLoginCompleted(): " + isSuccess);
+    public void onLoginCompleted(boolean isSuccessful) {
+        Log.d(getName(), "onLoginCompleted(): " + isSuccessful);
         hideDialog();
 
-        if (isSuccess) {
+        if (isSuccessful) {
             Toast.makeText(this, "Successfully logged in!",
                     Toast.LENGTH_SHORT).show();
         } else {

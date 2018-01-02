@@ -32,7 +32,7 @@ FireDroid.authInitializer(LoginActivity.class)
 		.init();
 ```
 
-* To the auth initializer, you need to pass the activity class (LoginActivity) that is responsible for login stuff in your app. This activity is forcibly displayed by the framework as long as user is not logged in.
+* To the auth initializer, you need to pass the activity class (`LoginActivity`) that is responsible for login stuff in your app. This activity is forcibly displayed by the framework as long as user is not logged in.
 
 * The keys/ids required by login processes of Google, Facebook, and Twitter are obtained from their respective dev websites. To obtain these keys/ids, follow the links below:
 	* Google: https://developers.google.com/identity/sign-in/android/start-integrating?authuser=0#get_your_backend_servers_oauth_20_client_id
@@ -45,4 +45,24 @@ FireDroid.authInitializer(LoginActivity.class)
 
 * You also need to enable corresponding login methods on your app's Firebase dashboard.
 
-### ...
+### How to use
+
+1. Make sure your login activity (the same one mentioned above) implements the `LoginListener` interface
+ - This will add two methods to login activity: `onLoginStarted()` and `onLoginCompleted(isSuccessful)`.
+ - You can do whatever you want inside these methods. What is recommended is blocking UI (showing dialog, etc.) when login is started and unblocking it when login is completed.
+
+2. Call the following line of code inside login activity's `onCreate()` method:
+```java
+FireDroid.auth().setLoginListener(this);
+```
+
+3. Add your login button(s) to the layout of login activity
+ - On click method of Google login button, you simply call: `FireDroid.auth().logInWithGoogle();`
+ - On click method of Facebook login button, you simply call: `FireDroid.auth().logInWithFacebook();`
+ - On click method of Twitter login button, you simply call: `FireDroid.auth().logInWithTwitter();`
+
+And that's all... All ready and set for the login part of your app!
+
+- - -
+
+## More features are coming soon!
