@@ -7,7 +7,6 @@ import java.lang.ref.WeakReference;
 
 import blog.ugurcan.firedroid.auth.FireAuth;
 import blog.ugurcan.firedroid.auth.IFireAuth;
-import blog.ugurcan.firedroid.auth.ILogin;
 import blog.ugurcan.firedroid.auth._IFireAuth;
 
 /**
@@ -29,10 +28,6 @@ public class FireDroid {
     }
 
     public static IFireAuth auth() {
-        return mAuth;
-    }
-
-    public static ILogin login() {
         return mAuth;
     }
 

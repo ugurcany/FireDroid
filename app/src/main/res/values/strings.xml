@@ -1,4 +1,10 @@
 <resources>
     <string name="app_name">FireDroid</string>
     <string name="login">Login</string>
+
+    <!--LOGIN BUTTONS-->
+    <string name="button_google_login">LOG IN WITH GOOGLE</string>
+    <string name="button_facebook_login">LOG IN WITH FACEBOOK</string>
+    <string name="button_twitter_login">LOG IN WITH TWITTER</string>
+
 </resources>

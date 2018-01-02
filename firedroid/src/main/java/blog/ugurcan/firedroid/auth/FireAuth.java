@@ -35,11 +35,10 @@ import com.twitter.sdk.android.core.TwitterException;
 import com.twitter.sdk.android.core.TwitterSession;
 import com.twitter.sdk.android.core.identity.TwitterAuthClient;
 
+import java.util.Arrays;
 import java.util.List;
 
 import blog.ugurcan.firedroid.FireDroid;
-import blog.ugurcan.firedroid.auth.view.FacebookLoginButton;
-import blog.ugurcan.firedroid.auth.view.TwitterLoginButton;
 
 /**
  * Created by ugurcan on 30.12.2017.
@@ -168,14 +167,14 @@ public class FireAuth implements _IFireAuth {
 
 
     @Override
-    public void withGoogle() {
+    public void logInWithGoogle() {
         Intent signInIntent = googleSignInClient.getSignInIntent();
         FireDroid.currentActivity()
                 .startActivityForResult(signInIntent, FireAuth.REQUEST_GOOGLE_LOGIN);
     }
 
     @Override
-    public void withFacebook(FacebookLoginButton fbLoginButton) {
+    public void logInWithFacebook() {
         FacebookCallback<LoginResult> fbCallback = new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
@@ -192,12 +191,14 @@ public class FireAuth implements _IFireAuth {
                 loginListener.onLoginCompleted(false);
             }
         };
+        LoginManager.getInstance().registerCallback(fbCallbackManager, fbCallback);
 
-        fbLoginButton.registerCallback(fbCallbackManager, fbCallback);
+        List<String> perms = Arrays.asList("email", "public_profile");
+        LoginManager.getInstance().logInWithReadPermissions(FireDroid.currentActivity(), perms);
     }
 
     @Override
-    public void withTwitter(TwitterLoginButton twitterLoginButton) {
+    public void logInWithTwitter() {
         Callback<TwitterSession> twitterCallback = new Callback<TwitterSession>() {
             @Override
             public void success(Result<TwitterSession> result) {
@@ -211,7 +212,7 @@ public class FireAuth implements _IFireAuth {
             }
         };
 
-        twitterLoginButton.setCallback(twitterCallback);
+        twitterAuthClient.authorize(FireDroid.currentActivity(), twitterCallback);
     }
 
 

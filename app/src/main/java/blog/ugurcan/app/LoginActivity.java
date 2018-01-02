@@ -9,6 +9,7 @@ import blog.ugurcan.firedroid.FireDroid;
 import blog.ugurcan.firedroid.FireDroidActivity;
 import blog.ugurcan.firedroid.auth.LoginListener;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by ugurcan on 30.12.2017.
@@ -27,6 +28,21 @@ public class LoginActivity extends FireDroidActivity implements LoginListener {
     @Override
     public String getName() {
         return LoginActivity.class.getSimpleName();
+    }
+
+    @OnClick(R.id.button_google_login)
+    void onGoogleLoginClicked() {
+        FireDroid.auth().logInWithGoogle();
+    }
+
+    @OnClick(R.id.button_facebook_login)
+    void onFacebookLoginClicked() {
+        FireDroid.auth().logInWithFacebook();
+    }
+
+    @OnClick(R.id.button_twitter_login)
+    void onTwitterLoginClicked() {
+        FireDroid.auth().logInWithTwitter();
     }
 
     @Override
@@ -48,4 +64,5 @@ public class LoginActivity extends FireDroidActivity implements LoginListener {
                     Toast.LENGTH_SHORT).show();
         }
     }
+
 }

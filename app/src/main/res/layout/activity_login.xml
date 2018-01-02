@@ -7,24 +7,30 @@
     android:gravity="center"
     android:orientation="vertical">
 
-    <blog.ugurcan.firedroid.auth.view.GoogleLoginButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+    <Button
+        android:id="@+id/button_google_login"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:text="@string/button_google_login"/>
 
     <android.support.v4.widget.Space
         android:layout_width="wrap_content"
         android:layout_height="20dp"/>
 
-    <blog.ugurcan.firedroid.auth.view.FacebookLoginButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+    <Button
+        android:id="@+id/button_facebook_login"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:text="@string/button_facebook_login"/>
 
     <android.support.v4.widget.Space
         android:layout_width="wrap_content"
         android:layout_height="20dp"/>
 
-    <blog.ugurcan.firedroid.auth.view.TwitterLoginButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+    <Button
+        android:id="@+id/button_twitter_login"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:text="@string/button_twitter_login"/>
 
 </LinearLayout>

@@ -23,6 +23,13 @@ public interface IFireAuth {
 
     AuthType getAuthType();
 
+    //LOGIN
+    void logInWithGoogle();
+
+    void logInWithFacebook();
+
+    void logInWithTwitter();
+
     //LOG OUT
     void logOut();
 

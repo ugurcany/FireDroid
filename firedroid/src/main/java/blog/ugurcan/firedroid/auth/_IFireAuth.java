@@ -7,7 +7,7 @@ import com.google.firebase.auth.FirebaseAuth;
 /**
  * Created by ugurcan on 31.12.2017.
  */
-public interface _IFireAuth extends ILogin, FirebaseAuth.AuthStateListener {
+public interface _IFireAuth extends IFireAuth, FirebaseAuth.AuthStateListener {
 
     void addAuthStateListener();
 
