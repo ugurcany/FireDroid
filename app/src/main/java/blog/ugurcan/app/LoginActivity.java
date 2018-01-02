@@ -25,11 +25,6 @@ public class LoginActivity extends FireDroidActivity implements LoginListener {
         FireDroid.auth().setLoginListener(this);
     }
 
-    @Override
-    public String getName() {
-        return LoginActivity.class.getSimpleName();
-    }
-
     @OnClick(R.id.button_google_login)
     void onGoogleLoginClicked() {
         FireDroid.auth().logInWithGoogle();

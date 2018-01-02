@@ -62,6 +62,10 @@ public abstract class FireDroidActivity extends AppCompatActivity {
         FireDroid._auth().handleLoginResult(requestCode, resultCode, data);
     }
 
+    public String getName(){
+        return this.getClass().getSimpleName();
+    }
+
     public void showDialog(String message) {
         hideDialog();
 
@@ -78,7 +82,5 @@ public abstract class FireDroidActivity extends AppCompatActivity {
             dialog = null;
         }
     }
-
-    public abstract String getName();
 
 }

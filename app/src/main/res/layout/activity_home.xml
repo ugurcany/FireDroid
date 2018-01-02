@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="@dimen/activity_padding"
     android:gravity="center_horizontal"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:padding="@dimen/activity_padding">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -16,7 +15,7 @@
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:layout_marginRight="10dp"
-            android:scaleType="fitCenter"/>
+            android:scaleType="fitCenter" />
 
         <TextView
             android:id="@+id/textview_user_display_name"
@@ -25,36 +24,36 @@
             android:layout_toRightOf="@id/imageview_user"
             android:gravity="center|start"
             android:hint="No display name found!"
-            android:text="User display name"/>
+            android:text="User display name" />
 
         <TextView
             android:id="@+id/textview_user_email"
             android:layout_width="wrap_content"
             android:layout_height="20dp"
-            android:layout_toRightOf="@id/imageview_user"
             android:layout_below="@id/textview_user_display_name"
+            android:layout_toRightOf="@id/imageview_user"
             android:gravity="center|start"
             android:hint="No email found!"
-            android:text="User email"/>
+            android:text="User email" />
 
         <TextView
             android:id="@+id/textview_user_phone"
             android:layout_width="wrap_content"
             android:layout_height="20dp"
-            android:layout_toRightOf="@id/imageview_user"
             android:layout_below="@id/textview_user_email"
+            android:layout_toRightOf="@id/imageview_user"
             android:gravity="center|start"
             android:hint="No phone found!"
-            android:text="User phone"/>
+            android:text="User phone" />
 
         <TextView
             android:id="@+id/textview_auth_type"
             android:layout_width="wrap_content"
             android:layout_height="20dp"
-            android:layout_toRightOf="@id/imageview_user"
             android:layout_below="@id/textview_user_phone"
+            android:layout_toRightOf="@id/imageview_user"
             android:gravity="center|start"
-            android:text="Auth type"/>
+            android:text="Auth type" />
 
     </RelativeLayout>
 

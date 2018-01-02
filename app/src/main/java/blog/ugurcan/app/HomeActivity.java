@@ -53,11 +53,6 @@ public class HomeActivity extends FireDroidActivity implements LogoutListener {
     }
 
     @Override
-    public String getName() {
-        return HomeActivity.class.getSimpleName();
-    }
-
-    @Override
     public void onLogoutStarted() {
         showDialog("Logging out... Please wait");
     }
@@ -69,7 +64,7 @@ public class HomeActivity extends FireDroidActivity implements LogoutListener {
                 Toast.LENGTH_SHORT).show();
     }
 
-    private void updateUI(){
+    private void updateUI() {
         Picasso.with(this)
                 .load(FireDroid.auth().getUserImageUrl())
                 .into(imageviewUser);
