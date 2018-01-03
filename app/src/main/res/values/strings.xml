@@ -1,6 +1,9 @@
 <resources>
 
     <string name="app_name">FireDroid</string>
-    <string name="login">Login</string>
+    <string name="activity_login">Login</string>
+
+    <string name="menu_item_login">Log in</string>
+    <string name="menu_item_logout">Log out</string>
 
 </resources>

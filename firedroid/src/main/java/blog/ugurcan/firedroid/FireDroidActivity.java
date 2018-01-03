@@ -7,6 +7,10 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
+import blog.ugurcan.firedroid.auth.AuthStateListener;
+import blog.ugurcan.firedroid.auth.LoginListener;
+import blog.ugurcan.firedroid.auth.LogoutListener;
+
 /**
  * Created by ugurcan on 28.12.2017.
  */
@@ -24,6 +28,16 @@ public abstract class FireDroidActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         Log.d(getName(), "onStart()");
+
+        if(this instanceof LoginListener){
+            FireDroid._auth().setLoginListener((LoginListener) this);
+        }
+        if(this instanceof LogoutListener){
+            FireDroid._auth().setLogoutListener((LogoutListener) this);
+        }
+        if(this instanceof AuthStateListener){
+            FireDroid._auth().setAuthStateListener((AuthStateListener) this);
+        }
 
         FireDroid._auth().addAuthStateListener();
     }

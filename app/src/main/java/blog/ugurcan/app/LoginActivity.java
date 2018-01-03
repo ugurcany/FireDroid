@@ -21,8 +21,6 @@ public class LoginActivity extends FireDroidActivity implements LoginListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
-
-        FireDroid.auth().setLoginListener(this);
     }
 
     @OnClick(R.id.button_google_login)
@@ -57,6 +55,13 @@ public class LoginActivity extends FireDroidActivity implements LoginListener {
         } else {
             Toast.makeText(this, "Login failed!",
                     Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public void onAuthStateChanged(boolean isLoggedIn) {
+        if (isLoggedIn) {
+            finish();
         }
     }
 

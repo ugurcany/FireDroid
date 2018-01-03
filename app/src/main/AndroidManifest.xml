@@ -22,7 +22,7 @@
 
         <activity
             android:name=".LoginActivity"
-            android:label="@string/login"
+            android:label="@string/activity_login"
             android:launchMode="singleTop"
             android:screenOrientation="portrait">
             <meta-data

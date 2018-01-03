@@ -7,12 +7,9 @@ import android.net.Uri;
  */
 public interface IFireAuth {
 
-    //LISTENER
-    void setLoginListener(LoginListener loginListener);
-
-    void setLogoutListener(LogoutListener logoutListener);
-
     //USER DATA
+    boolean isLoggedIn();
+
     Uri getUserImageUrl();
 
     String getUserDisplayName();

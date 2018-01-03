@@ -3,8 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/item_logout"
-        android:title="Log out"
+        android:id="@+id/item_login"
+        android:title="@string/menu_item_login"
         android:orderInCategory="100"
         app:showAsAction="always"/>
 

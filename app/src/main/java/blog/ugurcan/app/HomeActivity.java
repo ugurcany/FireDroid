@@ -1,7 +1,9 @@
 package blog.ugurcan.app;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
@@ -26,45 +28,51 @@ public class HomeActivity extends FireDroidActivity implements LogoutListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         ButterKnife.bind(this);
-
-        FireDroid.auth().setLogoutListener(this);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_home, menu);
+        buttonLogin = menu.findItem(R.id.item_login);
+        updateLoginButton();
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.item_logout:
+        if (item.equals(buttonLogin)) {
+            if (FireDroid.auth().isLoggedIn()) {
                 FireDroid.auth().logOut();
-                break;
+            } else {
+                startActivity(
+                        new Intent(this, LoginActivity.class));
+            }
         }
         return true;
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
-        updateUI();
-    }
-
-    @Override
     public void onLogoutStarted() {
+        Log.d(getName(), "onLogoutStarted()");
         showDialog("Logging out... Please wait");
     }
 
     @Override
     public void onLogoutCompleted() {
+        Log.d(getName(), "onLogoutCompleted()");
         hideDialog();
+
         Toast.makeText(this, "Successfully logged out!",
                 Toast.LENGTH_SHORT).show();
     }
 
-    private void updateUI() {
+    @Override
+    public void onAuthStateChanged(boolean isLoggedIn) {
+        updateContent();
+        updateLoginButton();
+    }
+
+    private void updateContent() {
         Picasso.with(this)
                 .load(FireDroid.auth().getUserImageUrl())
                 .into(imageviewUser);
@@ -73,6 +81,16 @@ public class HomeActivity extends FireDroidActivity implements LogoutListener {
         textviewUserEmail.setText(FireDroid.auth().getUserEmail());
         textviewUserPhone.setText(FireDroid.auth().getUserPhone());
         textviewAuthType.setText(FireDroid.auth().getAuthType().toString());
+    }
+
+    private void updateLoginButton() {
+        if (buttonLogin != null) {
+            if (FireDroid.auth().isLoggedIn()) {
+                buttonLogin.setTitle(getString(R.string.menu_item_logout));
+            } else {
+                buttonLogin.setTitle(getString(R.string.menu_item_login));
+            }
+        }
     }
 
     @BindView(R.id.textview_user_display_name)
@@ -85,5 +103,7 @@ public class HomeActivity extends FireDroidActivity implements LogoutListener {
     TextView textviewAuthType;
     @BindView(R.id.imageview_user)
     ImageView imageviewUser;
+
+    private MenuItem buttonLogin;
 
 }

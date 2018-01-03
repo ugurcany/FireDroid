@@ -23,8 +23,8 @@ public class FireDroid {
         mAppContext = new WeakReference<>(appContext);
     }
 
-    public static FireAuth.Initializer authInitializer(Class loginActivityClass) {
-        return new FireAuth.Initializer(loginActivityClass);
+    public static FireAuth.Initializer authInitializer() {
+        return new FireAuth.Initializer();
     }
 
     public static IFireAuth auth() {

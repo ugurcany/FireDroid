@@ -47,19 +47,23 @@ public class FireAuth implements _IFireAuth {
 
     private final static int REQUEST_GOOGLE_LOGIN = 9001;
 
-    private Class loginActivityClass;
     private GoogleSignInClient googleSignInClient;
     private CallbackManager fbCallbackManager;
     private TwitterAuthClient twitterAuthClient;
 
+    private AuthStateListener authStateListener;
     private LoginListener loginListener;
     private LogoutListener logoutListener;
 
     FireAuth(Initializer initializer) {
-        this.loginActivityClass = initializer.loginActivityClass;
         this.googleSignInClient = initializer.googleSignInClient;
         this.fbCallbackManager = initializer.fbCallbackManager;
         this.twitterAuthClient = initializer.twitterAuthClient;
+    }
+
+    @Override
+    public void setAuthStateListener(AuthStateListener authStateListener) {
+        this.authStateListener = authStateListener;
     }
 
     @Override
@@ -70,6 +74,11 @@ public class FireAuth implements _IFireAuth {
     @Override
     public void setLogoutListener(LogoutListener logoutListener) {
         this.logoutListener = logoutListener;
+    }
+
+    @Override
+    public boolean isLoggedIn() {
+        return FirebaseAuth.getInstance().getCurrentUser() != null;
     }
 
     @Override
@@ -245,15 +254,7 @@ public class FireAuth implements _IFireAuth {
 
     @Override
     public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-        boolean isLoggedIn = FirebaseAuth.getInstance().getCurrentUser() != null;
-        boolean isOnLogin = FireDroid.currentActivity().getClass().equals(loginActivityClass);
-
-        if (isLoggedIn && isOnLogin) { //NOW LOGGED IN --> FINISH LOGIN ACTIVITY
-            FireDroid.currentActivity().finish();
-        } else if (!isLoggedIn && !isOnLogin) { //NOW LOGGED OUT --> START LOGIN ACTIVITY
-            FireDroid.appContext().startActivity(
-                    new Intent(FireDroid.currentActivity(), loginActivityClass));
-        }
+        authStateListener.onAuthStateChanged(isLoggedIn());
     }
 
 
@@ -288,13 +289,11 @@ public class FireAuth implements _IFireAuth {
 
     public static class Initializer {
 
-        private Class loginActivityClass;
         private GoogleSignInClient googleSignInClient;
         private CallbackManager fbCallbackManager;
         private TwitterAuthClient twitterAuthClient;
 
-        public Initializer(Class loginActivityClass) {
-            this.loginActivityClass = loginActivityClass;
+        public Initializer() {
         }
 
         public Initializer google(String googleWebClientId) {
