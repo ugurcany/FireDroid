@@ -193,13 +193,8 @@ public class FireAuth implements _IFireAuth {
         switch (getAuthType()) {
             case Google:
                 logoutListener.onLogoutStarted();
-                googleSignInClient.signOut().addOnCompleteListener(
-                        new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                doFirebaseLogout();
-                            }
-                        });
+                googleSignInClient.signOut();
+                doFirebaseLogout();
                 break;
             case Facebook:
                 logoutListener.onLogoutStarted();
