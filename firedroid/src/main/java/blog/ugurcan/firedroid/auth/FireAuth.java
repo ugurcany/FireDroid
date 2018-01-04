@@ -51,7 +51,6 @@ public class FireAuth implements _IFireAuth {
     private CallbackManager fbCallbackManager;
     private TwitterAuthClient twitterAuthClient;
 
-    private AuthStateListener authStateListener;
     private LoginListener loginListener;
     private LogoutListener logoutListener;
 
@@ -59,11 +58,6 @@ public class FireAuth implements _IFireAuth {
         this.googleSignInClient = initializer.googleSignInClient;
         this.fbCallbackManager = initializer.fbCallbackManager;
         this.twitterAuthClient = initializer.twitterAuthClient;
-    }
-
-    @Override
-    public void setAuthStateListener(AuthStateListener authStateListener) {
-        this.authStateListener = authStateListener;
     }
 
     @Override
@@ -146,36 +140,6 @@ public class FireAuth implements _IFireAuth {
     }
 
     @Override
-    public void logOut() {
-        switch (getAuthType()) {
-            case Google:
-                logoutListener.onLogoutStarted();
-                googleSignInClient.signOut().addOnCompleteListener(
-                        new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                logoutListener.onLogoutCompleted();
-                                FirebaseAuth.getInstance().signOut();
-                            }
-                        });
-                break;
-            case Facebook:
-                logoutListener.onLogoutStarted();
-                LoginManager.getInstance().logOut();
-                logoutListener.onLogoutCompleted();
-                FirebaseAuth.getInstance().signOut();
-                break;
-            case Twitter:
-                logoutListener.onLogoutStarted();
-                TwitterCore.getInstance().getSessionManager().clearActiveSession();
-                logoutListener.onLogoutCompleted();
-                FirebaseAuth.getInstance().signOut();
-                break;
-        }
-    }
-
-
-    @Override
     public void logInWithGoogle() {
         Intent signInIntent = googleSignInClient.getSignInIntent();
         FireDroid.currentActivity()
@@ -187,7 +151,7 @@ public class FireAuth implements _IFireAuth {
         FacebookCallback<LoginResult> fbCallback = new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
-                finalizeAuth(AuthType.Facebook, loginResult.getAccessToken().getToken(), null);
+                doFirebaseLogin(AuthType.Facebook, loginResult.getAccessToken().getToken(), null);
             }
 
             @Override
@@ -212,7 +176,7 @@ public class FireAuth implements _IFireAuth {
             @Override
             public void success(Result<TwitterSession> result) {
                 TwitterAuthToken twitterAuthToken = result.data.getAuthToken();
-                finalizeAuth(AuthType.Twitter, twitterAuthToken.token, twitterAuthToken.secret);
+                doFirebaseLogin(AuthType.Twitter, twitterAuthToken.token, twitterAuthToken.secret);
             }
 
             @Override
@@ -222,6 +186,32 @@ public class FireAuth implements _IFireAuth {
         };
 
         twitterAuthClient.authorize(FireDroid.currentActivity(), twitterCallback);
+    }
+
+    @Override
+    public void logOut() {
+        switch (getAuthType()) {
+            case Google:
+                logoutListener.onLogoutStarted();
+                googleSignInClient.signOut().addOnCompleteListener(
+                        new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                doFirebaseLogout();
+                            }
+                        });
+                break;
+            case Facebook:
+                logoutListener.onLogoutStarted();
+                LoginManager.getInstance().logOut();
+                doFirebaseLogout();
+                break;
+            case Twitter:
+                logoutListener.onLogoutStarted();
+                TwitterCore.getInstance().getSessionManager().clearActiveSession();
+                doFirebaseLogout();
+                break;
+        }
     }
 
 
@@ -241,7 +231,7 @@ public class FireAuth implements _IFireAuth {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             try {
                 GoogleSignInAccount account = task.getResult(ApiException.class);
-                finalizeAuth(AuthType.Google, account.getIdToken(), null);
+                doFirebaseLogin(AuthType.Google, account.getIdToken(), null);
             } catch (ApiException e) {
                 loginListener.onLoginCompleted(false);
             }
@@ -254,11 +244,11 @@ public class FireAuth implements _IFireAuth {
 
     @Override
     public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-        authStateListener.onAuthStateChanged(isLoggedIn());
+
     }
 
 
-    private void finalizeAuth(AuthType authType, String token, String secret) {
+    private void doFirebaseLogin(AuthType authType, String token, String secret) {
         loginListener.onLoginStarted();
 
         AuthCredential credential;
@@ -284,6 +274,11 @@ public class FireAuth implements _IFireAuth {
                                 loginListener.onLoginCompleted(task.isSuccessful());
                             }
                         });
+    }
+
+    private void doFirebaseLogout() {
+        FirebaseAuth.getInstance().signOut();
+        logoutListener.onLogoutCompleted();
     }
 
 

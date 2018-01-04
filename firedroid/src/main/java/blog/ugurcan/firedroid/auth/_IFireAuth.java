@@ -9,8 +9,6 @@ import com.google.firebase.auth.FirebaseAuth;
  */
 public interface _IFireAuth extends IFireAuth, FirebaseAuth.AuthStateListener {
 
-    void setAuthStateListener(AuthStateListener authStateListener);
-
     void setLoginListener(LoginListener loginListener);
 
     void setLogoutListener(LogoutListener logoutListener);

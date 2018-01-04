@@ -52,6 +52,13 @@ public class HomeActivity extends FireDroidActivity implements LogoutListener {
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        updateContent();
+        updateLoginButton();
+    }
+
+    @Override
     public void onLogoutStarted() {
         Log.d(getName(), "onLogoutStarted()");
         showDialog("Logging out... Please wait");
@@ -64,10 +71,7 @@ public class HomeActivity extends FireDroidActivity implements LogoutListener {
 
         Toast.makeText(this, "Successfully logged out!",
                 Toast.LENGTH_SHORT).show();
-    }
 
-    @Override
-    public void onAuthStateChanged(boolean isLoggedIn) {
         updateContent();
         updateLoginButton();
     }

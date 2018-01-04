@@ -7,7 +7,6 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
-import blog.ugurcan.firedroid.auth.AuthStateListener;
 import blog.ugurcan.firedroid.auth.LoginListener;
 import blog.ugurcan.firedroid.auth.LogoutListener;
 
@@ -29,14 +28,11 @@ public abstract class FireDroidActivity extends AppCompatActivity {
         super.onStart();
         Log.d(getName(), "onStart()");
 
-        if(this instanceof LoginListener){
+        if (this instanceof LoginListener) {
             FireDroid._auth().setLoginListener((LoginListener) this);
         }
-        if(this instanceof LogoutListener){
+        if (this instanceof LogoutListener) {
             FireDroid._auth().setLogoutListener((LogoutListener) this);
-        }
-        if(this instanceof AuthStateListener){
-            FireDroid._auth().setAuthStateListener((AuthStateListener) this);
         }
 
         FireDroid._auth().addAuthStateListener();
@@ -76,7 +72,7 @@ public abstract class FireDroidActivity extends AppCompatActivity {
         FireDroid._auth().handleLoginResult(requestCode, resultCode, data);
     }
 
-    public String getName(){
+    public String getName() {
         return this.getClass().getSimpleName();
     }
 
