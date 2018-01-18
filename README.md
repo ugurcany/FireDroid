@@ -1,6 +1,6 @@
 # FireDroid *[Under development]*
 
-[![Build Status](https://travis-ci.org/ugurcany/FireDroid.svg?branch=develop)](https://travis-ci.org/ugurcany/FireDroid)
+[![Build Status](https://travis-ci.org/ugurcany/FireDroid.svg?branch=develop)](https://travis-ci.org/ugurcany/FireDroid) [![JitPack](https://jitpack.io/v/ugurcany/FireDroid.svg)](https://jitpack.io/#ugurcany/FireDroid)
 
 **FireDroid** is an architectural framework for **Android** apps that use **Firebase** services. The framework takes on the burden of integrating Firebase services to your app and helps you avoid boilerplate code.
 
