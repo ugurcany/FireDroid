@@ -40,29 +40,29 @@ FireDroid.authInitializer()
 	* Facebook: https://developers.facebook.com/
 	* Twitter: https://apps.twitter.com/
 
-* If you want to use Google login, you need to add your app's SHA-1 fingerprint to the Firebase dashboard of your app.
+* If you want to use **Google login**, you need to add your app's SHA-1 fingerprint to the Firebase dashboard of your app.
 
-* If you want to use Facebook or Twitter login, you need to add your app's Firebase OAuth redirect URI (that can be found on Firebase dashboard) to your app's dashboard page on Facebook/Twitter dev website.
+* If you want to use **Facebook or Twitter login**, you need to add your app's Firebase OAuth redirect URI (that can be found on Firebase dashboard) to your app's dashboard page on Facebook/Twitter dev website.
 
 * You also need to enable corresponding login methods on your app's Firebase dashboard.
 
 ### How to perform login
 
-1. Have your login activity (the activity that has login buttons, etc.) implement the `LoginListener` interface
+1. Have your **login activity** (the activity that has login buttons, etc.) implement the `LoginListener` interface
 	- This will add two methods to the activity: `onLoginStarted()` and `onLoginCompleted(isSuccessful)`. It is obvious when these methods are triggered :)
 	- You can do whatever you want inside these methods. What is recommended is blocking UI (showing dialog, etc.) when login is started; unblocking UI and finishing login activity when login is completed.
 
-2. Add your login button(s) to the layout of login activity
+2. Add your **login button(s)** to the layout of login activity
 	- On Google login button click, you simply call: `FireDroid.auth().logInWithGoogle();`
 	- On Facebook login button click, you simply call: `FireDroid.auth().logInWithFacebook();`
 	- On Twitter login button click, you simply call: `FireDroid.auth().logInWithTwitter();`
 
 ### How to perform logout
 
-1. Have your logout activity (the activity that has logout button, etc.) implement the `LogoutListener` interface
+1. Have your **logout activity** (the activity that has logout button, etc.) implement the `LogoutListener` interface
 	- This will add two methods to the activity: `onLogoutStarted()` and `onLogoutCompleted()`. It is obvious when these methods are triggered :)
 
-2. Add your logout button to the layout of logout activity
+2. Add your **logout button** to the layout of logout activity
 	- On logout button click, you simply call: `FireDroid.auth().logOut();`
 
 

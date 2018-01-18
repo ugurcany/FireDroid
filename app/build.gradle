@@ -41,6 +41,7 @@ dependencies {
     implementation 'com.squareup.picasso:picasso:2.5.2'
 
     implementation project(':firedroid')
+    //compile 'com.github.ugurcany:FireDroid:develop-SNAPSHOT'
 }
 
 apply plugin: 'com.google.gms.google-services'
