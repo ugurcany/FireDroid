@@ -5,6 +5,8 @@ package blog.ugurcan.firedroid.db;
  */
 public interface DbOperationListener {
 
-    <T> void onDbOperationCompleted(int opId, boolean isSuccessful, T data, Exception exception);
+    <T> void onDbOperationSuccessful(int opId, T data);
+
+    void onDbOperationFailed(int opId, Exception exception);
 
 }

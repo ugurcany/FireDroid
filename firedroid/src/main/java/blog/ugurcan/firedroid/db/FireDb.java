@@ -28,16 +28,19 @@ public class FireDb implements _IFireDb {
     }
 
     @Override
-    public void write(final int opId, String path, final Object value) {
+    public void write(final int opId, String path, final Object data) {
         if (dbOperationListener == null)
             throw new IllegalStateException("Class does not implement DbOperationListener!");
 
-        FirebaseDatabase.getInstance().getReference(path).setValue(value)
+        FirebaseDatabase.getInstance().getReference(path).setValue(data)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        dbOperationListener.onDbOperationCompleted(
-                                opId, task.isSuccessful(), value, task.getException());
+                        if (task.isSuccessful()) {
+                            dbOperationListener.onDbOperationSuccessful(opId, data);
+                        } else {
+                            dbOperationListener.onDbOperationFailed(opId, task.getException());
+                        }
                     }
                 });
     }
@@ -50,14 +53,16 @@ public class FireDb implements _IFireDb {
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         T data = dataSnapshot.getValue(dataClass);
 
-                        dbOperationListener.onDbOperationCompleted(
-                                opId, data != null, data, null);
+                        if (data != null) {
+                            dbOperationListener.onDbOperationSuccessful(opId, data);
+                        } else {
+                            dbOperationListener.onDbOperationFailed(opId, null);
+                        }
                     }
 
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
-                        dbOperationListener.onDbOperationCompleted(
-                                opId, false, null, databaseError.toException());
+                        dbOperationListener.onDbOperationFailed(opId, databaseError.toException());
                     }
                 });
     }
@@ -67,7 +72,7 @@ public class FireDb implements _IFireDb {
         public Initializer() {
         }
 
-        public Initializer persistData(boolean persist){
+        public Initializer persistData(boolean persist) {
             FirebaseDatabase.getInstance().setPersistenceEnabled(persist);
             return this;
         }

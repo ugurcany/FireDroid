@@ -5,7 +5,7 @@ package blog.ugurcan.firedroid.db;
  */
 public interface IFireDb {
 
-    void write(int opId, String path, Object value);
+    void write(int opId, String path, Object data);
 
     <T> void read(int opId, String path, Class<T> dataClass);
 

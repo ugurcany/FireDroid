@@ -67,21 +67,35 @@ public class DbActivity extends FireDroidActivity implements DbOperationListener
     }
 
     @Override
-    public <T> void onDbOperationCompleted(
-            int opId, boolean isSuccessful, T data, Exception exception) {
-        Log.d(getName(), "onDbOperationCompleted(): " + isSuccessful
-                + "\n" + "--Data: " + data
+    public <T> void onDbOperationSuccessful(int opId, T data) {
+        Log.d(getName(), "onDbOperationSuccessful()"
+                + "\n" + "--Data: " + data);
+
+        if (opId == 1) {
+            updateDbOpButton(buttonWriteAllowedForAuth, 100);
+        } else if (opId == 2) {
+            updateDbOpButton(buttonWriteAllowed, 100);
+        } else if (opId == 3) {
+            updateDbOpButton(buttonWriteNotAllowed, 100);
+        } else if (opId == 4) {
+            updateDbOpButton(buttonReadAllowed, 100);
+            Toast.makeText(this, "" + data, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public void onDbOperationFailed(int opId, Exception exception) {
+        Log.d(getName(), "onDbOperationFailed()"
                 + "\n" + "--Exception: " + exception);
 
         if (opId == 1) {
-            updateDbOpButton(buttonWriteAllowedForAuth, isSuccessful ? 100 : -1);
+            updateDbOpButton(buttonWriteAllowedForAuth, -1);
         } else if (opId == 2) {
-            updateDbOpButton(buttonWriteAllowed, isSuccessful ? 100 : -1);
+            updateDbOpButton(buttonWriteAllowed, -1);
         } else if (opId == 3) {
-            updateDbOpButton(buttonWriteNotAllowed, isSuccessful ? 100 : -1);
+            updateDbOpButton(buttonWriteNotAllowed, -1);
         } else if (opId == 4) {
-            updateDbOpButton(buttonReadAllowed, isSuccessful ? 100 : -1);
-            Toast.makeText(this, "" + data, Toast.LENGTH_SHORT).show();
+            updateDbOpButton(buttonReadAllowed, -1);
         }
     }
 
