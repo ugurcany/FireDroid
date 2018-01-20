@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.annotation.Nullable;
 import android.util.Log;
-import android.util.Pair;
 
 import com.dd.processbutton.iml.ActionProcessButton;
 
@@ -33,7 +32,8 @@ public class DbActivity extends FireDroidActivity implements DbOperationListener
             return;
 
         updateWriteButton(buttonWriteAllowedForAuth, 1);
-        FireDroid.db().write(1, "allowedForAuth/mydata", new Pair<>(123, "Test"));
+        FireDroid.db().write(1, "allowedForAuth/mydata",
+                new DbObject(123, "Test"));
     }
 
     @OnClick(R.id.button_write_allowed)
@@ -42,7 +42,8 @@ public class DbActivity extends FireDroidActivity implements DbOperationListener
             return;
 
         updateWriteButton(buttonWriteAllowed, 1);
-        FireDroid.db().write(2, "allowed/mydata", new Pair<>(123, "Test"));
+        FireDroid.db().write(2, "allowed/mydata",
+                new DbObject(123, "Test"));
     }
 
     @OnClick(R.id.button_write_not_allowed)
@@ -51,7 +52,8 @@ public class DbActivity extends FireDroidActivity implements DbOperationListener
             return;
 
         updateWriteButton(buttonWriteNotAllowed, 1);
-        FireDroid.db().write(3, "notAllowed/mydata", new Pair<>(123, "Test"));
+        FireDroid.db().write(3, "notAllowed/mydata",
+                new DbObject(123, "Test"));
     }
 
     @Override
