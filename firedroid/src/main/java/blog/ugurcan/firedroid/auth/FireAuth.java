@@ -141,6 +141,11 @@ public class FireAuth implements _IFireAuth {
 
     @Override
     public void logInWithGoogle() {
+        if (googleSignInClient == null)
+            throw new IllegalStateException("Google auth not initialized!");
+        if (loginListener == null)
+            throw new IllegalStateException("Class does not implement LoginListener!");
+
         Intent signInIntent = googleSignInClient.getSignInIntent();
         FireDroid.currentActivity()
                 .startActivityForResult(signInIntent, FireAuth.REQUEST_GOOGLE_LOGIN);
@@ -148,6 +153,11 @@ public class FireAuth implements _IFireAuth {
 
     @Override
     public void logInWithFacebook() {
+        if (fbCallbackManager == null)
+            throw new IllegalStateException("Facebook auth not initialized!");
+        if (loginListener == null)
+            throw new IllegalStateException("Class does not implement LoginListener!");
+
         FacebookCallback<LoginResult> fbCallback = new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
@@ -172,6 +182,11 @@ public class FireAuth implements _IFireAuth {
 
     @Override
     public void logInWithTwitter() {
+        if (twitterAuthClient == null)
+            throw new IllegalStateException("Twitter auth not initialized!");
+        if (loginListener == null)
+            throw new IllegalStateException("Class does not implement LoginListener!");
+
         Callback<TwitterSession> twitterCallback = new Callback<TwitterSession>() {
             @Override
             public void success(Result<TwitterSession> result) {
@@ -190,6 +205,9 @@ public class FireAuth implements _IFireAuth {
 
     @Override
     public void logOut() {
+        if (logoutListener == null)
+            throw new IllegalStateException("Class does not implement LogoutListener!");
+
         switch (getAuthType()) {
             case Google:
                 logoutListener.onLogoutStarted();

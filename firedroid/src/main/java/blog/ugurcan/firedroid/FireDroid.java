@@ -8,6 +8,9 @@ import java.lang.ref.WeakReference;
 import blog.ugurcan.firedroid.auth.FireAuth;
 import blog.ugurcan.firedroid.auth.IFireAuth;
 import blog.ugurcan.firedroid.auth._IFireAuth;
+import blog.ugurcan.firedroid.db.FireDb;
+import blog.ugurcan.firedroid.db.IFireDb;
+import blog.ugurcan.firedroid.db._IFireDb;
 
 /**
  * Created by ugurcan on 28.12.2017.
@@ -18,15 +21,11 @@ public class FireDroid {
     private static WeakReference<Activity> mCurrentActivity;
 
     private static _IFireAuth mAuth;
+    private static _IFireDb mDb;
 
-    public static void init(Context appContext) {
-        mAppContext = new WeakReference<>(appContext);
-    }
-
-    public static FireAuth.Initializer authInitializer() {
-        return new FireAuth.Initializer();
-    }
-
+    /*
+     * AUTH
+     */
     public static IFireAuth auth() {
         return mAuth;
     }
@@ -37,6 +36,36 @@ public class FireDroid {
 
     public static void setAuth(FireAuth auth) {
         mAuth = auth;
+    }
+
+    /*
+     * DB
+     */
+    public static IFireDb db() {
+        return mDb;
+    }
+
+    static _IFireDb _db() {
+        return mDb;
+    }
+
+    public static void setDb(FireDb db) {
+        mDb = db;
+    }
+
+    /*
+     * INIT
+     */
+    public static void init(Context appContext) {
+        mAppContext = new WeakReference<>(appContext);
+    }
+
+    public static FireAuth.Initializer authInitializer() {
+        return new FireAuth.Initializer();
+    }
+
+    public static FireDb.Initializer dbInitializer() {
+        return new FireDb.Initializer();
     }
 
     public static Context appContext() {

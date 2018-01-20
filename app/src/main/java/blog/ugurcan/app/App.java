@@ -19,6 +19,10 @@ public class App extends Application {
                 .facebook(getString(R.string.facebook_app_id))
                 .twitter(getString(R.string.twitter_key), getString(R.string.twitter_secret))
                 .init();
+
+        FireDroid.dbInitializer()
+                .persistData(false)
+                .init();
     }
 
 }

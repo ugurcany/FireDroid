@@ -17,6 +17,7 @@ import blog.ugurcan.firedroid.FireDroidActivity;
 import blog.ugurcan.firedroid.auth.LogoutListener;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by ugurcan on 28.12.2017.
@@ -93,6 +94,12 @@ public class HomeActivity extends FireDroidActivity implements LogoutListener {
                 buttonLogin.setTitle(getString(R.string.menu_item_login));
             }
         }
+    }
+
+    @OnClick(R.id.button_db_ops)
+    void onDbOpsClicked() {
+        startActivity(
+                new Intent(this, DbActivity.class));
     }
 
     @BindView(R.id.textview_user_display_name)

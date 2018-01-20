@@ -9,6 +9,7 @@ import android.util.Log;
 
 import blog.ugurcan.firedroid.auth.LoginListener;
 import blog.ugurcan.firedroid.auth.LogoutListener;
+import blog.ugurcan.firedroid.db.DbOperationListener;
 
 /**
  * Created by ugurcan on 28.12.2017.
@@ -33,6 +34,9 @@ public abstract class FireDroidActivity extends AppCompatActivity {
         }
         if (this instanceof LogoutListener) {
             FireDroid._auth().setLogoutListener((LogoutListener) this);
+        }
+        if (this instanceof DbOperationListener) {
+            FireDroid._db().setDbOperationListener((DbOperationListener) this);
         }
 
         FireDroid._auth().addAuthStateListener();

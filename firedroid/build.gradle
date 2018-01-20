@@ -39,8 +39,13 @@ dependencies {
 
     //FIREBASE
     api 'com.google.firebase:firebase-core:11.8.0'
+
+    //AUTH
     implementation 'com.google.firebase:firebase-auth:11.8.0'
     implementation 'com.google.android.gms:play-services-auth:11.8.0'
     implementation 'com.facebook.android:facebook-android-sdk:[4,5)'
     implementation 'com.twitter.sdk.android:twitter-core:3.1.1'
+
+    //DB
+    implementation 'com.google.firebase:firebase-database:11.8.0'
 }

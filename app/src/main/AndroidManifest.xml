@@ -30,6 +30,16 @@
                 android:value=".HomeActivity" />
         </activity>
 
+        <activity
+            android:name=".DbActivity"
+            android:label="@string/activity_db"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".HomeActivity" />
+        </activity>
+
     </application>
 
 </manifest>
