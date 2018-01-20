@@ -7,4 +7,6 @@ public interface IFireDb {
 
     void write(int opId, String path, Object value);
 
+    <T> void read(int opId, String path, Class<T> dataClass);
+
 }

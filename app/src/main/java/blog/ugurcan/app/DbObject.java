@@ -10,6 +10,9 @@ public class DbObject extends FireDbObject {
     private int id;
     private String text;
 
+    public DbObject() {
+    }
+
     public DbObject(int id, String text) {
         this.id = id;
         this.text = text;
@@ -29,6 +32,15 @@ public class DbObject extends FireDbObject {
 
     public void setText(String text) {
         this.text = text;
+    }
+
+    @Override
+    public String toString() {
+        return "DbObject{" +
+                "id=" + id +
+                ", text='" + text + '\'' +
+                ", timestamp='" + timestamp() + '\'' +
+                '}';
     }
 
 }

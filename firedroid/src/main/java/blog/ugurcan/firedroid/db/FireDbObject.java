@@ -16,7 +16,10 @@ public class FireDbObject {
 
     @Exclude
     public long timestamp() {
-        return (long) timestamp;
+        if (timestamp != null && timestamp instanceof Long) {
+            return (long) timestamp;
+        }
+        return -1L;
     }
 
 }

@@ -4,7 +4,10 @@ import android.support.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import blog.ugurcan.firedroid.FireDroid;
 
@@ -25,7 +28,7 @@ public class FireDb implements _IFireDb {
     }
 
     @Override
-    public void write(final int opId, String path, Object value) {
+    public void write(final int opId, String path, final Object value) {
         if (dbOperationListener == null)
             throw new IllegalStateException("Class does not implement DbOperationListener!");
 
@@ -34,7 +37,27 @@ public class FireDb implements _IFireDb {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         dbOperationListener.onDbOperationCompleted(
-                                opId, task.isSuccessful(), task.getException());
+                                opId, task.isSuccessful(), value, task.getException());
+                    }
+                });
+    }
+
+    @Override
+    public <T> void read(final int opId, String path, final Class<T> dataClass) {
+        FirebaseDatabase.getInstance().getReference(path)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        T data = dataSnapshot.getValue(dataClass);
+
+                        dbOperationListener.onDbOperationCompleted(
+                                opId, data != null, data, null);
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        dbOperationListener.onDbOperationCompleted(
+                                opId, false, null, databaseError.toException());
                     }
                 });
     }
