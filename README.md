@@ -22,6 +22,9 @@ FireDroid.init(getApplicationContext());
 **Step 6.** Make sure that each `Activity` class in your app extends the `FireDroidActivity` class provided by the framework
 
 
+- - -
+
+
 ## Authentication
 
 ### Setup
@@ -36,9 +39,9 @@ FireDroid.authInitializer()
 ```
 
 * Keys/ids required by auth SDKs of Google, Facebook, and Twitter are obtained from their respective dev websites. To obtain yours, follow the links below:
-	* Google: https://developers.google.com/identity/sign-in/android/start-integrating?authuser=0#get_your_backend_servers_oauth_20_client_id
-	* Facebook: https://developers.facebook.com/
-	* Twitter: https://apps.twitter.com/
+	* For **Google web client id**, go to: https://console.developers.google.com/apis/credentials
+	* For **Facebook app id**, go to: https://developers.facebook.com
+	* For** Twitter consumer key** and **consumer secret**, go to: https://apps.twitter.com
 
 * If you want to use **Google login**, you need to add your app's SHA-1 fingerprint to the Firebase dashboard of your app.
 
@@ -68,4 +71,7 @@ FireDroid.authInitializer()
 
 - - -
 
-## More features are coming soon!
+
+## Realtime Database
+
+Coming soon!
