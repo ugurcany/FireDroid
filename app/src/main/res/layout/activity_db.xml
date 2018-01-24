@@ -1,44 +1,81 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:gravity="center"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
-    <com.dd.processbutton.iml.ActionProcessButton
-        android:id="@+id/button_write_allowed_for_auth"
-        android:layout_width="250dp"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="WRITE TO ALLOWED-FOR-AUTH" />
+        android:gravity="center"
+        android:orientation="vertical">
 
-    <Space
-        android:layout_width="wrap_content"
-        android:layout_height="10dp" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorBackground"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:padding="16dp">
 
-    <com.dd.processbutton.iml.ActionProcessButton
-        android:id="@+id/button_write_allowed"
-        android:layout_width="250dp"
-        android:layout_height="wrap_content"
-        android:text="WRITE TO ALLOWED" />
+            <com.dd.processbutton.iml.ActionProcessButton
+                android:id="@+id/button_write_allowed"
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                android:text="WRITE TO ALLOWED" />
 
-    <Space
-        android:layout_width="wrap_content"
-        android:layout_height="10dp" />
+            <Space
+                android:layout_width="wrap_content"
+                android:layout_height="10dp" />
 
-    <com.dd.processbutton.iml.ActionProcessButton
-        android:id="@+id/button_write_not_allowed"
-        android:layout_width="250dp"
-        android:layout_height="wrap_content"
-        android:text="WRITE TO NOT-ALLOWED" />
+            <com.dd.processbutton.iml.ActionProcessButton
+                android:id="@+id/button_write_allowed_for_auth"
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                android:text="WRITE TO ALLOWED-FOR-AUTH" />
 
-    <Space
-        android:layout_width="wrap_content"
-        android:layout_height="20dp" />
+            <Space
+                android:layout_width="wrap_content"
+                android:layout_height="10dp" />
 
-    <com.dd.processbutton.iml.ActionProcessButton
-        android:id="@+id/button_read_allowed"
-        android:layout_width="250dp"
-        android:layout_height="wrap_content"
-        android:text="READ FROM ALLOWED" />
+            <com.dd.processbutton.iml.ActionProcessButton
+                android:id="@+id/button_write_not_allowed"
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                android:text="WRITE TO NOT-ALLOWED" />
 
-</LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <com.dd.processbutton.iml.ActionProcessButton
+                android:id="@+id/button_push_under_allowed"
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                android:text="PUSH UNDER ALLOWED" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorBackground"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <com.dd.processbutton.iml.ActionProcessButton
+                android:id="@+id/button_read_allowed"
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                android:text="READ FROM ALLOWED" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</ScrollView>

@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.annotation.Nullable;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.dd.processbutton.iml.ActionProcessButton;
 
@@ -20,21 +19,20 @@ import butterknife.OnClick;
  */
 public class DbActivity extends FireDroidActivity implements DbOperationListener {
 
+    private DbObject dbObject;
+
+    private static final String ALLOWED_LIST_PATH = "allowed/datalist";
+    private static final String ALLOWED_PATH = "allowed/mydata";
+    private static final String ALLOWED_FOR_AUTH_PATH = "allowedForAuth/mydata";
+    private static final String NOT_ALLOWED_PATH = "notAllowed/mydata";
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_db);
         ButterKnife.bind(this);
-    }
 
-    @OnClick(R.id.button_write_allowed_for_auth)
-    void onWriteToAllowedForAuthClicked() {
-        if (buttonWriteAllowedForAuth.getProgress() != 0)
-            return;
-
-        updateDbOpButton(buttonWriteAllowedForAuth, 1);
-        FireDroid.db().write(1, "allowedForAuth/mydata",
-                new DbObject(123, "Test"));
+        dbObject = new DbObject(123, "Test");
     }
 
     @OnClick(R.id.button_write_allowed)
@@ -43,8 +41,16 @@ public class DbActivity extends FireDroidActivity implements DbOperationListener
             return;
 
         updateDbOpButton(buttonWriteAllowed, 1);
-        FireDroid.db().write(2, "allowed/mydata",
-                new DbObject(123, "Test"));
+        FireDroid.db().write(R.id.button_write_allowed, ALLOWED_PATH, dbObject);
+    }
+
+    @OnClick(R.id.button_write_allowed_for_auth)
+    void onWriteToAllowedForAuthClicked() {
+        if (buttonWriteAllowedForAuth.getProgress() != 0)
+            return;
+
+        updateDbOpButton(buttonWriteAllowedForAuth, 1);
+        FireDroid.db().write(R.id.button_write_allowed_for_auth, ALLOWED_FOR_AUTH_PATH, dbObject);
     }
 
     @OnClick(R.id.button_write_not_allowed)
@@ -53,8 +59,16 @@ public class DbActivity extends FireDroidActivity implements DbOperationListener
             return;
 
         updateDbOpButton(buttonWriteNotAllowed, 1);
-        FireDroid.db().write(3, "notAllowed/mydata",
-                new DbObject(123, "Test"));
+        FireDroid.db().write(R.id.button_write_not_allowed, NOT_ALLOWED_PATH, dbObject);
+    }
+
+    @OnClick(R.id.button_push_under_allowed)
+    void onPushUnderAllowedClicked() {
+        if (buttonPushUnderAllowed.getProgress() != 0)
+            return;
+
+        updateDbOpButton(buttonPushUnderAllowed, 1);
+        FireDroid.db().pushUnder(R.id.button_push_under_allowed, ALLOWED_LIST_PATH, dbObject);
     }
 
     @OnClick(R.id.button_read_allowed)
@@ -63,7 +77,7 @@ public class DbActivity extends FireDroidActivity implements DbOperationListener
             return;
 
         updateDbOpButton(buttonReadAllowed, 1);
-        FireDroid.db().read(4, "allowed/mydata", DbObject.class);
+        FireDroid.db().read(R.id.button_read_allowed, ALLOWED_PATH, DbObject.class);
     }
 
     @Override
@@ -71,16 +85,8 @@ public class DbActivity extends FireDroidActivity implements DbOperationListener
         Log.d(getName(), "onDbOperationSuccessful()"
                 + "\n" + "--Data: " + data);
 
-        if (opId == 1) {
-            updateDbOpButton(buttonWriteAllowedForAuth, 100);
-        } else if (opId == 2) {
-            updateDbOpButton(buttonWriteAllowed, 100);
-        } else if (opId == 3) {
-            updateDbOpButton(buttonWriteNotAllowed, 100);
-        } else if (opId == 4) {
-            updateDbOpButton(buttonReadAllowed, 100);
-            Toast.makeText(this, "" + data, Toast.LENGTH_SHORT).show();
-        }
+        ActionProcessButton button = findViewById(opId);
+        updateDbOpButton(button, 100);
     }
 
     @Override
@@ -88,15 +94,8 @@ public class DbActivity extends FireDroidActivity implements DbOperationListener
         Log.d(getName(), "onDbOperationFailed()"
                 + "\n" + "--Exception: " + exception);
 
-        if (opId == 1) {
-            updateDbOpButton(buttonWriteAllowedForAuth, -1);
-        } else if (opId == 2) {
-            updateDbOpButton(buttonWriteAllowed, -1);
-        } else if (opId == 3) {
-            updateDbOpButton(buttonWriteNotAllowed, -1);
-        } else if (opId == 4) {
-            updateDbOpButton(buttonReadAllowed, -1);
-        }
+        ActionProcessButton button = findViewById(opId);
+        updateDbOpButton(button, -1);
     }
 
     private void updateDbOpButton(final ActionProcessButton button, int progress) {
@@ -123,6 +122,8 @@ public class DbActivity extends FireDroidActivity implements DbOperationListener
     ActionProcessButton buttonWriteAllowed;
     @BindView(R.id.button_write_not_allowed)
     ActionProcessButton buttonWriteNotAllowed;
+    @BindView(R.id.button_push_under_allowed)
+    ActionProcessButton buttonPushUnderAllowed;
     @BindView(R.id.button_read_allowed)
     ActionProcessButton buttonReadAllowed;
 

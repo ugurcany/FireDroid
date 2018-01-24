@@ -6,6 +6,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
@@ -32,17 +33,33 @@ public class FireDb implements _IFireDb {
         if (dbOperationListener == null)
             throw new IllegalStateException("Class does not implement DbOperationListener!");
 
-        FirebaseDatabase.getInstance().getReference(path).setValue(data)
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            dbOperationListener.onDbOperationSuccessful(opId, data);
-                        } else {
-                            dbOperationListener.onDbOperationFailed(opId, task.getException());
-                        }
-                    }
-                });
+        _write(opId, path, data, false);
+    }
+
+    @Override
+    public void pushUnder(final int opId, String path, final Object data) {
+        if (dbOperationListener == null)
+            throw new IllegalStateException("Class does not implement DbOperationListener!");
+
+        _write(opId, path, data, true);
+    }
+
+    private void _write(final int opId, String path, final Object data, boolean pushUnder) {
+        DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference(path);
+
+        if (pushUnder)
+            dbRef = dbRef.push();
+
+        dbRef.setValue(data).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+                    dbOperationListener.onDbOperationSuccessful(opId, data);
+                } else {
+                    dbOperationListener.onDbOperationFailed(opId, task.getException());
+                }
+            }
+        });
     }
 
     @Override
@@ -66,6 +83,7 @@ public class FireDb implements _IFireDb {
                     }
                 });
     }
+
 
     public static class Initializer {
 
