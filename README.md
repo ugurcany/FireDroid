@@ -29,7 +29,7 @@ FireDroid.init(getApplicationContext());
 
 ### Setup
 
-Initialize auth services that you want to use inside your app's `onCreate()` method as follows:
+Initialize auth service together with the auth methods that you want to use inside your app's `onCreate()` method as follows:
 ```java
 FireDroid.authInitializer()
 		.google(getString(R.string.google_web_client_id)) //OPTIONAL
@@ -74,4 +74,15 @@ FireDroid.authInitializer()
 
 ## Realtime Database
 
-Coming soon!
+### Setup
+
+Initialize realtime database service inside your app's `onCreate()` method as follows:
+```java
+FireDroid.dbInitializer()
+		.diskPersistence(isEnabled)
+		.init();
+```
+
+* To enable or disable the persistence of cached data and pending write operations in disk (not only in memory), simply add the `diskPersistence(isEnabled)` call to the init chain.
+
+### More coming soon...

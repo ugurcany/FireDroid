@@ -21,7 +21,7 @@ public class App extends Application {
                 .init();
 
         FireDroid.dbInitializer()
-                .persistData(false)
+                .diskPersistence(false)
                 .init();
     }
 

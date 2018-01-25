@@ -90,8 +90,8 @@ public class FireDb implements _IFireDb {
         public Initializer() {
         }
 
-        public Initializer persistData(boolean persist) {
-            FirebaseDatabase.getInstance().setPersistenceEnabled(persist);
+        public Initializer diskPersistence(boolean isEnabled) {
+            FirebaseDatabase.getInstance().setPersistenceEnabled(isEnabled);
             return this;
         }
 
