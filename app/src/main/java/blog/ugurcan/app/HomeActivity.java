@@ -45,8 +45,7 @@ public class HomeActivity extends FireDroidActivity implements LogoutListener {
             if (FireDroid.auth().isLoggedIn()) {
                 FireDroid.auth().logOut();
             } else {
-                startActivity(
-                        new Intent(this, LoginActivity.class));
+                startActivity(new Intent(this, LoginActivity.class));
             }
         }
         return true;
@@ -96,10 +95,9 @@ public class HomeActivity extends FireDroidActivity implements LogoutListener {
         }
     }
 
-    @OnClick(R.id.button_db_ops)
-    void onDbOpsClicked() {
-        startActivity(
-                new Intent(this, DbActivity.class));
+    @OnClick(R.id.button_db_operations)
+    void onDbOperationsClicked() {
+        startActivity(new Intent(this, DbActivity.class));
     }
 
     @BindView(R.id.textview_user_display_name)

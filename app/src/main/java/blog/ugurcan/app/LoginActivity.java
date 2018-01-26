@@ -41,7 +41,7 @@ public class LoginActivity extends FireDroidActivity implements LoginListener {
     @Override
     public void onLoginStarted() {
         Log.d(getName(), "onLoginStarted()");
-        showDialog("Logging in... Please wait");
+        showProgress("Logging in... Please wait");
     }
 
     @Override

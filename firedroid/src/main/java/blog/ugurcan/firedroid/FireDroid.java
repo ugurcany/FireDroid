@@ -7,9 +7,13 @@ import java.lang.ref.WeakReference;
 
 import blog.ugurcan.firedroid.auth.FireAuth;
 import blog.ugurcan.firedroid.auth.IFireAuth;
+import blog.ugurcan.firedroid.auth.LoginListener;
+import blog.ugurcan.firedroid.auth.LogoutListener;
 import blog.ugurcan.firedroid.auth._IFireAuth;
+import blog.ugurcan.firedroid.db.DbOperationListener;
 import blog.ugurcan.firedroid.db.FireDb;
 import blog.ugurcan.firedroid.db.IFireDb;
+import blog.ugurcan.firedroid.db.SubscriptionListener;
 import blog.ugurcan.firedroid.db._IFireDb;
 
 /**
@@ -86,6 +90,29 @@ public class FireDroid {
             mCurrentActivity.clear();
             mCurrentActivity = null;
         }
+    }
+
+    static void setListeners(Activity activity) {
+        nullifyListeners();
+        if (activity instanceof LoginListener) {
+            FireDroid._auth().setLoginListener((LoginListener) activity);
+        }
+        if (activity instanceof LogoutListener) {
+            FireDroid._auth().setLogoutListener((LogoutListener) activity);
+        }
+        if (activity instanceof DbOperationListener) {
+            FireDroid._db().setDbOperationListener((DbOperationListener) activity);
+        }
+        if (activity instanceof SubscriptionListener) {
+            FireDroid._db().setSubscriptionListener((SubscriptionListener) activity);
+        }
+    }
+
+    private static void nullifyListeners() {
+        FireDroid._auth().setLoginListener(null);
+        FireDroid._auth().setLogoutListener(null);
+        FireDroid._db().setDbOperationListener(null);
+        FireDroid._db().setSubscriptionListener(null);
     }
 
 }

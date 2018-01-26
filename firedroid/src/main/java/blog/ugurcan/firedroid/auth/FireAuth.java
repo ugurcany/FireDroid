@@ -294,7 +294,9 @@ public class FireAuth implements _IFireAuth {
         logoutListener.onLogoutCompleted();
     }
 
-
+    /*
+     * AUTH INITIALIZER
+     */
     public static class Initializer {
 
         private GoogleSignInClient googleSignInClient;

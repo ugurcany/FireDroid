@@ -1,22 +1,20 @@
 package blog.ugurcan.firedroid;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
-import blog.ugurcan.firedroid.auth.LoginListener;
-import blog.ugurcan.firedroid.auth.LogoutListener;
-import blog.ugurcan.firedroid.db.DbOperationListener;
-
 /**
  * Created by ugurcan on 28.12.2017.
  */
 public abstract class FireDroidActivity extends AppCompatActivity {
 
-    private ProgressDialog dialog;
+    private AlertDialog dialog;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -28,18 +26,6 @@ public abstract class FireDroidActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         Log.d(getName(), "onStart()");
-
-        if (this instanceof LoginListener) {
-            FireDroid._auth().setLoginListener((LoginListener) this);
-        }
-        if (this instanceof LogoutListener) {
-            FireDroid._auth().setLogoutListener((LogoutListener) this);
-        }
-        if (this instanceof DbOperationListener) {
-            FireDroid._db().setDbOperationListener((DbOperationListener) this);
-        }
-
-        FireDroid._auth().addAuthStateListener();
     }
 
     @Override
@@ -48,20 +34,25 @@ public abstract class FireDroidActivity extends AppCompatActivity {
         Log.d(getName(), "onResume()");
 
         FireDroid.setCurrentActivity(this);
+        FireDroid.setListeners(this);
+
+        FireDroid._auth().addAuthStateListener();
+        FireDroid._db().startSubscriptions();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         Log.d(getName(), "onPause()");
+
+        FireDroid._auth().removeAuthStateListener();
+        FireDroid._db().endSubscriptions();
     }
 
     @Override
     protected void onStop() {
         super.onStop();
         Log.d(getName(), "onStop()");
-
-        FireDroid._auth().removeAuthStateListener();
     }
 
     @Override
@@ -80,7 +71,10 @@ public abstract class FireDroidActivity extends AppCompatActivity {
         return this.getClass().getSimpleName();
     }
 
-    public void showDialog(String message) {
+    /*
+     * DIALOG HELPERS
+     */
+    public void showProgress(String message) {
         hideDialog();
 
         dialog = new ProgressDialog(this);
@@ -90,9 +84,24 @@ public abstract class FireDroidActivity extends AppCompatActivity {
         dialog.show();
     }
 
+    public void showMessage(String title, String message) {
+        hideDialog();
+
+        dialog = new AlertDialog.Builder(this)
+                .setTitle(title)
+                .setMessage(message)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .show();
+    }
+
     public void hideDialog() {
         if (dialog != null) {
-            dialog.cancel();
+            dialog.dismiss();
             dialog = null;
         }
     }
