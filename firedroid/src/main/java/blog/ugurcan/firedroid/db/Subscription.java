@@ -9,15 +9,18 @@ class Subscription<T> {
 
     private DatabaseReference dbReference;
     private Class<T> dataClass;
+    private boolean isChildSubsc;
 
     public Subscription(DatabaseReference dbReference) {
         this.dbReference = dbReference;
         this.dataClass = null;
+        this.isChildSubsc = false;
     }
 
-    public Subscription(DatabaseReference dbReference, Class<T> dataClass) {
+    public Subscription(DatabaseReference dbReference, Class<T> dataClass, boolean isChildSubsc) {
         this.dbReference = dbReference;
         this.dataClass = dataClass;
+        this.isChildSubsc = isChildSubsc;
     }
 
     public DatabaseReference getDbReference() {
@@ -34,6 +37,14 @@ class Subscription<T> {
 
     public void setDataClass(Class<T> dataClass) {
         this.dataClass = dataClass;
+    }
+
+    public boolean isChildSubsc() {
+        return isChildSubsc;
+    }
+
+    public void setChildSubsc(boolean childSubsc) {
+        isChildSubsc = childSubsc;
     }
 
     @Override

@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -21,7 +22,8 @@ import blog.ugurcan.firedroid.FireDroid;
 public class FireDb implements _IFireDb {
 
     private DbOperationListener dbOperationListener;
-    private SubscriptionListener subscriptionListener;
+    private DataChangeListener dataChangeListener;
+    private ChildDataChangeListener childDataChangeListener;
 
     private List<Subscription> subscriptions;
 
@@ -35,14 +37,20 @@ public class FireDb implements _IFireDb {
     }
 
     @Override
-    public void setSubscriptionListener(SubscriptionListener subscriptionListener) {
-        this.subscriptionListener = subscriptionListener;
+    public void setDataChangeListener(DataChangeListener dataChangeListener) {
+        this.dataChangeListener = dataChangeListener;
+    }
+
+    @Override
+    public void setChildDataChangeListener(ChildDataChangeListener childDataChangeListener) {
+        this.childDataChangeListener = childDataChangeListener;
     }
 
     @Override
     public void write(final int opId, String path, final Object data) {
         if (dbOperationListener == null)
-            throw new IllegalStateException("Class does not implement DbOperationListener!");
+            throw new IllegalStateException("Class does not implement " +
+                    DbOperationListener.class.getSimpleName() + "!");
 
         _write(opId, path, data, false);
     }
@@ -50,7 +58,8 @@ public class FireDb implements _IFireDb {
     @Override
     public void pushUnder(final int opId, String path, final Object data) {
         if (dbOperationListener == null)
-            throw new IllegalStateException("Class does not implement DbOperationListener!");
+            throw new IllegalStateException("Class does not implement " +
+                    DbOperationListener.class.getSimpleName() + "!");
 
         _write(opId, path, data, true);
     }
@@ -91,59 +100,96 @@ public class FireDb implements _IFireDb {
     }
 
     @Override
-    public <T> void subscribe(String path, final Class<T> dataClass) {
-        if (subscriptionListener == null)
-            throw new IllegalStateException("Class does not implement SubscriptionListener!");
+    public <T> void subscribeToDataChange(String path, final Class<T> dataClass) {
+        if (dataChangeListener == null)
+            throw new IllegalStateException("Class does not implement " +
+                    DataChangeListener.class.getSimpleName() + "!");
 
         DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference(path);
-        Subscription<T> subsc = new Subscription<T>(dbRef, dataClass);
+        Subscription<T> subsc = new Subscription<T>(dbRef, dataClass, false);
 
         if (!subscriptions.contains(subsc)) {
             subscriptions.add(subsc);
-            subscriptionListener.onSubscriptionStarted();
 
-            dbRef.removeEventListener(this);
+            dbRef.removeEventListener((ValueEventListener) this);
             dbRef.addValueEventListener(this);
         } else {
-            subscriptionListener.onSubscriptionFailed(new Exception("Already subscribed!"));
+            dataChangeListener.onSubscriptionFailed(new Exception("Already subscribed!"));
         }
     }
 
     @Override
-    public void unsubscribe(String path) {
-        if (subscriptionListener == null)
-            throw new IllegalStateException("Class does not implement SubscriptionListener!");
+    public void unsubscribeFromDataChange(String path) {
+        if (dataChangeListener == null)
+            throw new IllegalStateException("Class does not implement " +
+                    DataChangeListener.class.getSimpleName() + "!");
 
         DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference(path);
         Subscription subsc = getSubscription(dbRef);
 
         if (subscriptions.contains(subsc)) {
             subscriptions.remove(subsc);
-            subscriptionListener.onSubscriptionEnded();
 
-            dbRef.removeEventListener(this);
+            dbRef.removeEventListener((ValueEventListener) this);
         } else {
-            subscriptionListener.onSubscriptionFailed(new Exception("Already unsubscribed!"));
+            dataChangeListener.onSubscriptionFailed(new Exception("Already unsubscribed!"));
+        }
+    }
+
+    @Override
+    public <T> void subscribeToChildDataChange(String path, Class<T> dataClass) {
+        if (childDataChangeListener == null)
+            throw new IllegalStateException("Class does not implement " +
+                    ChildDataChangeListener.class.getSimpleName() + "!");
+
+        DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference(path);
+        Subscription<T> subsc = new Subscription<T>(dbRef, dataClass, true);
+
+        if (!subscriptions.contains(subsc)) {
+            subscriptions.add(subsc);
+
+            dbRef.removeEventListener((ChildEventListener) this);
+            dbRef.addChildEventListener(this);
+        } else {
+            childDataChangeListener.onSubscriptionFailed(new Exception("Already subscribed!"));
+        }
+    }
+
+    @Override
+    public void unsubscribeFromChildDataChange(String path) {
+        if (childDataChangeListener == null)
+            throw new IllegalStateException("Class does not implement " +
+                    ChildDataChangeListener.class.getSimpleName() + "!");
+
+        DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference(path);
+        Subscription subsc = getSubscription(dbRef);
+
+        if (subscriptions.contains(subsc)) {
+            subscriptions.remove(subsc);
+
+            dbRef.removeEventListener((ChildEventListener) this);
+        } else {
+            childDataChangeListener.onSubscriptionFailed(new Exception("Already unsubscribed!"));
         }
     }
 
     @Override
     public void startSubscriptions() {
-        if (subscriptionListener == null)
-            return;
-
         for (Subscription subsc : subscriptions) {
-            subsc.getDbReference().addValueEventListener(this);
+            if (dataChangeListener != null && !subsc.isChildSubsc())
+                subsc.getDbReference().addValueEventListener(this);
+            if (childDataChangeListener != null && subsc.isChildSubsc())
+                subsc.getDbReference().addChildEventListener(this);
         }
     }
 
     @Override
     public void endSubscriptions() {
-        if (subscriptionListener == null)
-            return;
-
         for (Subscription subsc : subscriptions) {
-            subsc.getDbReference().removeEventListener(this);
+            if (dataChangeListener != null && !subsc.isChildSubsc())
+                subsc.getDbReference().removeEventListener((ValueEventListener) this);
+            if (childDataChangeListener != null && subsc.isChildSubsc())
+                subsc.getDbReference().removeEventListener((ChildEventListener) this);
         }
     }
 
@@ -152,13 +198,36 @@ public class FireDb implements _IFireDb {
         Subscription subsc = getSubscription(dataSnapshot.getRef());
         if (subsc != null) {
             Object data = dataSnapshot.getValue(subsc.getDataClass());
-            subscriptionListener.onDataChanged(subsc.getDataClass().cast(data));
+            dataChangeListener.onDataChanged(subsc.getDataClass().cast(data));
         }
     }
 
     @Override
+    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+
+    }
+
+    @Override
+    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+    }
+
+    @Override
+    public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+    }
+
+    @Override
+    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+    }
+
+    @Override
     public void onCancelled(DatabaseError databaseError) {
-        subscriptionListener.onSubscriptionFailed(databaseError.toException());
+        if (dataChangeListener != null)
+            dataChangeListener.onSubscriptionFailed(databaseError.toException());
+        if (childDataChangeListener != null)
+            childDataChangeListener.onSubscriptionFailed(databaseError.toException());
     }
 
     private <T> Subscription getSubscription(DatabaseReference dbRef) {

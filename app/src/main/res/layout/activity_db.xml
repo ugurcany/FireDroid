@@ -38,19 +38,40 @@
         android:layout_height="10dp" />
 
     <com.dd.processbutton.iml.ActionProcessButton
-        android:id="@+id/button_subscribe"
+        android:id="@+id/button_subscribe_to_data"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
-        android:text="SUBSCRIBE" />
+        android:text="SUBSCRIBE TO DATA" />
 
     <android.support.v4.widget.Space
         android:layout_width="wrap_content"
         android:layout_height="10dp" />
 
     <com.dd.processbutton.iml.ActionProcessButton
-        android:id="@+id/button_unsubscribe"
+        android:id="@+id/button_unsubscribe_from_data"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
-        android:text="UNSUBSCRIBE" />
+        android:text="UNSUBSCRIBE FROM DATA" />
+
+    <android.support.v4.widget.Space
+        android:layout_width="wrap_content"
+        android:layout_height="10dp" />
+
+    <com.dd.processbutton.iml.ActionProcessButton
+        android:id="@+id/button_subscribe_to_child_data"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:text="SUBSCRIBE TO CHILD DATA" />
+
+    <android.support.v4.widget.Space
+        android:layout_width="wrap_content"
+        android:layout_height="10dp" />
+
+    <com.dd.processbutton.iml.ActionProcessButton
+        android:id="@+id/button_unsubscribe_from_child_data"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:text="UNSUBSCRIBE FROM CHILD DATA" />
+
 
 </LinearLayout>

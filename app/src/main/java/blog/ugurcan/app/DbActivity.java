@@ -9,8 +9,9 @@ import com.dd.processbutton.iml.ActionProcessButton;
 
 import blog.ugurcan.firedroid.FireDroid;
 import blog.ugurcan.firedroid.FireDroidActivity;
+import blog.ugurcan.firedroid.db.ChildDataChangeListener;
 import blog.ugurcan.firedroid.db.DbOperationListener;
-import blog.ugurcan.firedroid.db.SubscriptionListener;
+import blog.ugurcan.firedroid.db.DataChangeListener;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -18,7 +19,7 @@ import butterknife.OnClick;
  * Created by ugurcan on 20.01.2018.
  */
 public class DbActivity extends FireDroidActivity
-        implements DbOperationListener, SubscriptionListener {
+        implements DbOperationListener, DataChangeListener, ChildDataChangeListener {
 
     private static final String PATH_TO_DATALIST = "allowed/auth-user/data-list";
     private static final String PATH_TO_DATA = "allowed/auth-user/data";
@@ -66,14 +67,24 @@ public class DbActivity extends FireDroidActivity
         FireDroid.db().read(R.id.button_read, PATH_TO_DATA, DbObject.class);
     }
 
-    @OnClick(R.id.button_subscribe)
-    void onSubscribeClicked(ActionProcessButton button) {
-        FireDroid.db().subscribe(PATH_TO_DATA, DbObject.class);
+    @OnClick(R.id.button_subscribe_to_data)
+    void onSubscribeToDataClicked(ActionProcessButton button) {
+        FireDroid.db().subscribeToDataChange(PATH_TO_DATA, DbObject.class);
     }
 
-    @OnClick(R.id.button_unsubscribe)
-    void onUnsubscribeClicked(ActionProcessButton button) {
-        FireDroid.db().unsubscribe(PATH_TO_DATA);
+    @OnClick(R.id.button_unsubscribe_from_data)
+    void onUnsubscribeFromDataClicked(ActionProcessButton button) {
+        FireDroid.db().unsubscribeFromDataChange(PATH_TO_DATA);
+    }
+
+    @OnClick(R.id.button_subscribe_to_child_data)
+    void onSubscribeToChildDataClicked(ActionProcessButton button) {
+        FireDroid.db().subscribeToChildDataChange(PATH_TO_DATALIST, DbObject.class);
+    }
+
+    @OnClick(R.id.button_unsubscribe_from_child_data)
+    void onUnsubscribeFromChildDataClicked(ActionProcessButton button) {
+        FireDroid.db().unsubscribeFromChildDataChange(PATH_TO_DATALIST);
     }
 
     @Override
@@ -118,19 +129,29 @@ public class DbActivity extends FireDroidActivity
     }
 
     @Override
-    public void onSubscriptionStarted() {
-        Log.d(getName(), "onSubscriptionStarted()");
+    public <T> void onChildDataAdded(T data) {
+
+    }
+
+    @Override
+    public <T> void onChildDataChanged(T data) {
+
+    }
+
+    @Override
+    public <T> void onChildDataMoved(T data) {
+
+    }
+
+    @Override
+    public <T> void onChildDataRemoved(T data) {
+
     }
 
     @Override
     public void onSubscriptionFailed(Exception exception) {
         Log.d(getName(), "onSubscriptionFailed()"
                 + "\n" + "--Exception: " + exception);
-    }
-
-    @Override
-    public void onSubscriptionEnded() {
-        Log.d(getName(), "onSubscriptionEnded()");
     }
 
     private void updateDbOpButton(final ActionProcessButton button, int progress) {

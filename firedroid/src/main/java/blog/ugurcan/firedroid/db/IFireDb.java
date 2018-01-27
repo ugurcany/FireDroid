@@ -11,8 +11,12 @@ public interface IFireDb {
 
     <T> void read(int opId, String path, Class<T> dataClass);
 
-    <T> void subscribe(String path, Class<T> dataClass);
+    <T> void subscribeToDataChange(String path, Class<T> dataClass);
 
-    void unsubscribe(String path);
+    void unsubscribeFromDataChange(String path);
+
+    <T> void subscribeToChildDataChange(String path, Class<T> dataClass);
+
+    void unsubscribeFromChildDataChange(String path);
 
 }
