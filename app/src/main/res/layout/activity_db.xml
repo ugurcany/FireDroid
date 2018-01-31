@@ -12,6 +12,15 @@
         android:orientation="vertical"
         android:padding="@dimen/default_padding">
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="See logs for operation outputs" />
+
+        <android.support.v4.widget.Space
+            android:layout_width="wrap_content"
+            android:layout_height="20dp" />
+
         <com.dd.processbutton.iml.ActionProcessButton
             android:id="@+id/button_write"
             android:layout_width="250dp"

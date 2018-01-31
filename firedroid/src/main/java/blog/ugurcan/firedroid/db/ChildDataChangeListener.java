@@ -3,7 +3,7 @@ package blog.ugurcan.firedroid.db;
 /**
  * Created by ugurcan on 27.01.2018.
  */
-public interface ChildDataChangeListener extends _SubscriptionListener {
+public interface ChildDataChangeListener extends _SubscriptionStateListener {
 
     <T> void onChildDataAdded(String key, T data);
 

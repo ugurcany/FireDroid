@@ -85,4 +85,41 @@ FireDroid.dbInitializer()
 
 * To enable or disable the persistence of cached data and pending write operations in disk (not only in memory), simply add the `diskPersistence(isEnabled)` call to the init chain.
 
+### How to perform simple database operations
+
+Before performing simple database operations, have your activity implement the `DbOperationListener` interface. This will add two methods to the activity: `onDbOperationSuccessful(operationId, data)` and `onDbOperationFailed(operationId, exception)`. One of them is triggered, depending on the result of the operation that you execute.
+
+Simple database operations are as follows:
+
+* To **write** data to a path, you simply call:
+```java
+FireDroid.db().writeTo(operationId, "path/to/data", dbObject);
+```
+
+* To **push** data under a path, you simply call:
+```java
+FireDroid.db().pushUnder(operationId, "path/to/data-list", dbObject);
+```
+
+* To **read** data from a path, you simply call:
+```java
+FireDroid.db().readFrom(operationId, "path/to/data", DbObject.class);
+```
+
+### How to subscribe to/unsubscribe from data changes
+
+...
+
+### How to subscribe to/unsubscribe from child data changes
+
+...
+
+### About `FireDbObject`
+
+You can have the class of the data object (that you want to write to database) extend the `FireDbObject` class in order to add `timestamp` field besides the fields inside your object.
+
+
+- - -
+
+
 ### More coming soon...
