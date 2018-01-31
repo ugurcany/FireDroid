@@ -5,6 +5,7 @@
     android:layout_height="match_parent"
     android:gravity="center"
     android:orientation="vertical"
+    android:padding="@dimen/default_padding"
     tools:context=".LoginActivity">
 
     <com.dd.processbutton.iml.ActionProcessButton

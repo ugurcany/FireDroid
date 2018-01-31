@@ -40,13 +40,16 @@ public class DbActivity extends FireDroidActivity
         dbObject = new DbObject(123, "Test");
     }
 
+    /*
+     ***************************************
+     */
     @OnClick(R.id.button_write)
     void onWriteClicked(ActionProcessButton button) {
         if (button.getProgress() != BUTTON_ACTIVE)
             return;
 
         updateDbOpButton(button, BUTTON_IN_PROGRESS);
-        FireDroid.db().write(R.id.button_write, PATH_TO_DATA, dbObject);
+        FireDroid.db().writeTo(R.id.button_write, PATH_TO_DATA, dbObject);
     }
 
     @OnClick(R.id.button_push_under)
@@ -64,7 +67,7 @@ public class DbActivity extends FireDroidActivity
             return;
 
         updateDbOpButton(button, BUTTON_IN_PROGRESS);
-        FireDroid.db().read(R.id.button_read, PATH_TO_DATA, DbObject.class);
+        FireDroid.db().readFrom(R.id.button_read, PATH_TO_DATA, DbObject.class);
     }
 
     @OnClick(R.id.button_subscribe_to_data)
@@ -87,6 +90,9 @@ public class DbActivity extends FireDroidActivity
         FireDroid.db().unsubscribeFromChildDataChange(PATH_TO_DATALIST);
     }
 
+    /*
+     ***************************************
+     */
     @Override
     public <T> void onDbOperationSuccessful(int opId, T data) {
         Log.d(getName(), "onDbOperationSuccessful()"
@@ -117,35 +123,41 @@ public class DbActivity extends FireDroidActivity
         showMessage(title, message);
     }
 
+    /*
+     ***************************************
+     */
     @Override
     public <T> void onDataChanged(T data) {
         Log.d(getName(), "onDataChanged()"
                 + "\n" + "--Data: " + data);
-
-        //SHOW DIALOG
-        String title = "DATA CHANGED";
-        String message = "Data: " + data;
-        showMessage(title, message);
     }
 
     @Override
-    public <T> void onChildDataAdded(T data) {
-
+    public <T> void onChildDataAdded(String key, T data) {
+        Log.d(getName(), "onChildDataAdded()"
+                + "\n" + "--Key: " + key
+                + "\n" + "--Data: " + data);
     }
 
     @Override
-    public <T> void onChildDataChanged(T data) {
-
+    public <T> void onChildDataChanged(String key, T data) {
+        Log.d(getName(), "onChildDataChanged()"
+                + "\n" + "--Key: " + key
+                + "\n" + "--Data: " + data);
     }
 
     @Override
-    public <T> void onChildDataMoved(T data) {
-
+    public <T> void onChildDataMoved(String key, T data) {
+        Log.d(getName(), "onChildDataMoved()"
+                + "\n" + "--Key: " + key
+                + "\n" + "--Data: " + data);
     }
 
     @Override
-    public <T> void onChildDataRemoved(T data) {
-
+    public <T> void onChildDataRemoved(String key, T data) {
+        Log.d(getName(), "onChildDataRemoved()"
+                + "\n" + "--Key: " + key
+                + "\n" + "--Data: " + data);
     }
 
     @Override
@@ -154,6 +166,9 @@ public class DbActivity extends FireDroidActivity
                 + "\n" + "--Exception: " + exception);
     }
 
+    /*
+     ***************************************
+     */
     private void updateDbOpButton(final ActionProcessButton button, int progress) {
         button.setMode(ActionProcessButton.Mode.ENDLESS);
         button.setProgress(progress);

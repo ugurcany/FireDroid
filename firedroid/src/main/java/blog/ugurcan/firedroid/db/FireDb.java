@@ -47,7 +47,7 @@ public class FireDb implements _IFireDb {
     }
 
     @Override
-    public void write(final int opId, String path, final Object data) {
+    public void writeTo(final int opId, String path, final Object data) {
         if (dbOperationListener == null)
             throw new IllegalStateException("Class does not implement " +
                     DbOperationListener.class.getSimpleName() + "!");
@@ -83,7 +83,7 @@ public class FireDb implements _IFireDb {
     }
 
     @Override
-    public <T> void read(final int opId, String path, final Class<T> dataClass) {
+    public <T> void readFrom(final int opId, String path, final Class<T> dataClass) {
         FirebaseDatabase.getInstance().getReference(path)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
@@ -203,30 +203,50 @@ public class FireDb implements _IFireDb {
     }
 
     @Override
-    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-
+    public void onChildAdded(DataSnapshot dataSnapshot, String prevChildKey) {
+        Subscription subsc = getSubscription(dataSnapshot.getRef().getParent());
+        if (subsc != null) {
+            childDataChangeListener.onChildDataAdded(
+                    dataSnapshot.getKey(),
+                    dataSnapshot.getValue(subsc.getDataClass()));
+        }
     }
 
     @Override
-    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
+    public void onChildChanged(DataSnapshot dataSnapshot, String prevChildKey) {
+        Subscription subsc = getSubscription(dataSnapshot.getRef().getParent());
+        if (subsc != null) {
+            childDataChangeListener.onChildDataChanged(
+                    dataSnapshot.getKey(),
+                    dataSnapshot.getValue(subsc.getDataClass()));
+        }
     }
 
     @Override
     public void onChildRemoved(DataSnapshot dataSnapshot) {
-
+        Subscription subsc = getSubscription(dataSnapshot.getRef().getParent());
+        if (subsc != null) {
+            childDataChangeListener.onChildDataRemoved(
+                    dataSnapshot.getKey(),
+                    dataSnapshot.getValue(subsc.getDataClass()));
+        }
     }
 
     @Override
-    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
+    public void onChildMoved(DataSnapshot dataSnapshot, String prevChildKey) {
+        Subscription subsc = getSubscription(dataSnapshot.getRef().getParent());
+        if (subsc != null) {
+            childDataChangeListener.onChildDataMoved(
+                    dataSnapshot.getKey(),
+                    dataSnapshot.getValue(subsc.getDataClass()));
+        }
     }
 
     @Override
     public void onCancelled(DatabaseError databaseError) {
         if (dataChangeListener != null)
             dataChangeListener.onSubscriptionFailed(databaseError.toException());
-        if (childDataChangeListener != null)
+        else if (childDataChangeListener != null)
             childDataChangeListener.onSubscriptionFailed(databaseError.toException());
     }
 
