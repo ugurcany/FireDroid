@@ -1,12 +1,13 @@
 # FireDroid *[Under development]*
 
-[![Build Status](https://travis-ci.org/ugurcany/FireDroid.svg?branch=develop)](https://travis-ci.org/ugurcany/FireDroid) [![JitPack](https://jitpack.io/v/ugurcany/FireDroid.svg)](https://jitpack.io/#ugurcany/FireDroid)
+[![JitPack](https://jitpack.io/v/ugurcany/FireDroid.svg)](https://jitpack.io/#ugurcany/FireDroid) [![API](https://img.shields.io/badge/API-16%2B-red.svg?style=flat)](https://android-arsenal.com/api?level=16) [![Build Status](https://travis-ci.org/ugurcany/FireDroid.svg?branch=develop)](https://travis-ci.org/ugurcany/FireDroid) [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-FireDroid-orange.svg?style=flat)](https://android-arsenal.com/details/1/6718)
 
 **FireDroid** is an architectural framework for **Android** apps that use **Firebase** services. The framework takes on the burden of integrating Firebase services to your app and helps you avoid boilerplate code.
 
 ## Getting started
 
-**Step 1.** Add the framework dependency *(not released yet)* to your app level `build.gradle` file
+**Step 1.** Add the framework dependency `compile 'com.github.ugurcany:FireDroid:X.Y'` to your app level `build.gradle` file
+* To replace `X.Y` with the latest release version, see the JitPack badge at the top
 
 **Step 2.** Add `apply plugin: 'com.google.gms.google-services'` at the end of your app level `build.gradle` file
 
@@ -106,11 +107,11 @@ FireDroid.db().pushUnder(operationId, "path/to/data-list", dbObject);
 FireDroid.db().readFrom(operationId, "path/to/data", DbObject.class);
 ```
 
-### How to subscribe to/unsubscribe from data changes
+### How to subscribe to data changes
 
 ...
 
-### How to subscribe to/unsubscribe from child data changes
+### How to subscribe to child data changes
 
 ...
 
