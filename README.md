@@ -4,7 +4,15 @@
 
 **FireDroid** is an architectural framework for **Android** apps that use **Firebase** services. The framework takes on the burden of integrating Firebase services to your app and helps you avoid boilerplate code.
 
-[TOC]
+## Table of contents
+
+* [Getting started](#getting-started)
+* [Authentication](#authentication)
+* [Realtime database](#realtime-database)
+
+
+- - -
+
 
 ## Getting started
 
