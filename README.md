@@ -4,6 +4,8 @@
 
 **FireDroid** is an architectural framework for **Android** apps that use **Firebase** services. The framework takes on the burden of integrating Firebase services to your app and helps you avoid boilerplate code.
 
+[TOC]
+
 ## Getting started
 
 **Step 1.** Add the framework dependency `compile 'com.github.ugurcany:FireDroid:X.Y'` to your app level `build.gradle` file
@@ -73,7 +75,7 @@ FireDroid.authInitializer()
 - - -
 
 
-## Realtime Database
+## Realtime database
 
 ### Setup
 
@@ -109,11 +111,31 @@ FireDroid.db().readFrom(operationId, "path/to/data", DbObject.class);
 
 ### How to subscribe to data changes
 
-...
+Before subscribing to data changes on a path, have your activity implement the `DataChangeListener` interface. This will add two methods to the activity: `onDataChanged(data)` and `onSubscriptionFailed(exception)`. Each time there is a change in the data, the former method is triggered.
+
+* To **subscribe** to data changes on a path, you simply call:
+```java
+FireDroid.db().subscribeToDataChange("path/to/data", DbObject.class);
+```
+
+* To **unsubscribe** from data changes on a path, you simply call:
+```java
+FireDroid.db().unsubscribeFromDataChange("path/to/data");
+```
 
 ### How to subscribe to child data changes
 
-...
+Before subscribing to child data changes under a path, have your activity implement the `ChildDataChangeListener` interface. This will add five methods to the activity: `onChildDataAdded(key, data)`, `onChildDataChanged(key, data)`, `onChildDataMoved(key, data)`, `onChildDataAdded(key, data)`, and `onSubscriptionFailed(exception)`. Each time there is an activity under the path, the corresponding method is triggered.
+
+* To **subscribe** to child data changes under a path, you simply call:
+```java
+FireDroid.db().subscribeToChildDataChange("path/to/data-list", DbObject.class);
+```
+
+* To **unsubscribe** from child data changes under a path, you simply call:
+```java
+FireDroid.db().unsubscribeFromChildDataChange("path/to/data-list");
+```
 
 ### About `FireDbObject`
 
