@@ -1,4 +1,4 @@
-# FireDroid *[Under development]*
+# FireDroid
 
 [![JitPack](https://jitpack.io/v/ugurcany/FireDroid.svg)](https://jitpack.io/#ugurcany/FireDroid) [![API](https://img.shields.io/badge/API-16%2B-red.svg?style=flat)](https://android-arsenal.com/api?level=16) [![Build Status](https://travis-ci.org/ugurcany/FireDroid.svg?branch=develop)](https://travis-ci.org/ugurcany/FireDroid) [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-FireDroid-orange.svg?style=flat)](https://android-arsenal.com/details/1/6718)
 
