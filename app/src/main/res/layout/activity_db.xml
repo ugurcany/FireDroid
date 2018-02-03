@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".DbActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="@dimen/default_padding">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="See logs for operation outputs" />
+
+        <android.support.v4.widget.Space
+            android:layout_width="wrap_content"
+            android:layout_height="20dp" />
+
+        <com.dd.processbutton.iml.ActionProcessButton
+            android:id="@+id/button_write"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:text="WRITE TO" />
+
+        <android.support.v4.widget.Space
+            android:layout_width="wrap_content"
+            android:layout_height="10dp" />
+
+        <com.dd.processbutton.iml.ActionProcessButton
+            android:id="@+id/button_push_under"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:text="PUSH UNDER" />
+
+        <android.support.v4.widget.Space
+            android:layout_width="wrap_content"
+            android:layout_height="10dp" />
+
+        <com.dd.processbutton.iml.ActionProcessButton
+            android:id="@+id/button_read"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:text="READ FROM" />
+
+        <android.support.v4.widget.Space
+            android:layout_width="wrap_content"
+            android:layout_height="30dp" />
+
+        <com.dd.processbutton.iml.ActionProcessButton
+            android:id="@+id/button_subscribe_to_data"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:text="SUBSCRIBE TO DATA CHANGE" />
+
+        <android.support.v4.widget.Space
+            android:layout_width="wrap_content"
+            android:layout_height="10dp" />
+
+        <com.dd.processbutton.iml.ActionProcessButton
+            android:id="@+id/button_unsubscribe_from_data"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:text="UNSUBSCRIBE FROM DATA CHANGE" />
+
+        <android.support.v4.widget.Space
+            android:layout_width="wrap_content"
+            android:layout_height="30dp" />
+
+        <com.dd.processbutton.iml.ActionProcessButton
+            android:id="@+id/button_subscribe_to_child_data"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:text="SUBSCRIBE TO CHILD DATA CHANGE" />
+
+        <android.support.v4.widget.Space
+            android:layout_width="wrap_content"
+            android:layout_height="10dp" />
+
+        <com.dd.processbutton.iml.ActionProcessButton
+            android:id="@+id/button_unsubscribe_from_child_data"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:text="UNSUBSCRIBE FROM CHILD DATA CHANGE" />
+
+    </LinearLayout>
+
+</ScrollView>
