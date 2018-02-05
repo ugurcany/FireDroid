@@ -17,7 +17,7 @@
 ## Getting started
 
 **Step 1.** Add the framework dependency `compile 'com.github.ugurcany:FireDroid:X.Y'` to your app level `build.gradle` file
-* To replace `X.Y` with the latest release version, see the JitPack badge at the top
+* To replace `X.Y` with the latest release version, see the **JitPack badge** at the top
 
 **Step 2.** Add `apply plugin: 'com.google.gms.google-services'` at the end of your app level `build.gradle` file
 
@@ -58,7 +58,7 @@ FireDroid.authInitializer()
 
 * If you want to use **Facebook or Twitter login**, you need to add your app's Firebase OAuth redirect URI (that can be found on Firebase dashboard) to your app's dashboard page on Facebook/Twitter dev website.
 
-* You also need to enable corresponding login methods on your app's Firebase dashboard.
+* You also need to **enable corresponding login methods** on your app's Firebase dashboard.
 
 ### How to perform login
 
@@ -67,9 +67,9 @@ FireDroid.authInitializer()
 	- You can do whatever you want inside these methods. What is recommended is blocking UI (showing dialog, etc.) when login is started; unblocking UI and finishing login activity when login is completed.
 
 2. Add your **login button(s)** to the layout of login activity
-	- On Google login button click, you simply call: `FireDroid.auth().logInWithGoogle();`
-	- On Facebook login button click, you simply call: `FireDroid.auth().logInWithFacebook();`
-	- On Twitter login button click, you simply call: `FireDroid.auth().logInWithTwitter();`
+	- On **Google login button** click, you simply call: `FireDroid.auth().logInWithGoogle();`
+	- On **Facebook login button** click, you simply call: `FireDroid.auth().logInWithFacebook();`
+	- On **Twitter login button** click, you simply call: `FireDroid.auth().logInWithTwitter();`
 
 ### How to perform logout
 
