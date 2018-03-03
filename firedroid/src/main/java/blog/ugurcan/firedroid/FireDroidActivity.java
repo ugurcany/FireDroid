@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 
 /**
  * Created by ugurcan on 28.12.2017.
@@ -19,19 +18,13 @@ public abstract class FireDroidActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d(getName(), "onCreate()");
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        Log.d(getName(), "onStart()");
+        //Log.d(getName(), "onCreate()");
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        Log.d(getName(), "onResume()");
+        //Log.d(getName(), "onResume()");
 
         FireDroid.setCurrentActivity(this);
         FireDroid.setListeners(this);
@@ -43,22 +36,10 @@ public abstract class FireDroidActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        Log.d(getName(), "onPause()");
+        //Log.d(getName(), "onPause()");
 
         FireDroid._auth().removeAuthStateListener();
         FireDroid._db().endSubscriptions();
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        Log.d(getName(), "onStop()");
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        Log.d(getName(), "onDestroy()");
     }
 
     @Override

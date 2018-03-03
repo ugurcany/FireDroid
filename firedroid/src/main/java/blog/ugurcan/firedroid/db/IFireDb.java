@@ -17,7 +17,7 @@ public interface IFireDb {
     void unsubscribeFromDataChange(String path);
 
 
-    <T> void subscribeToChildDataChange(String path, Class<T> dataClass);
+    <T> void subscribeToChildDataChange(String path, Class<T> dataClass, SubscriptionConfig config);
 
     void unsubscribeFromChildDataChange(String path);
 

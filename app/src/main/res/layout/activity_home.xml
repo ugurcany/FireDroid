@@ -5,9 +5,10 @@
     android:layout_height="match_parent"
     android:gravity="center_horizontal"
     android:orientation="vertical"
-    tools:context=".HomeActivity">
+    tools:context=".activity.HomeActivity">
 
     <RelativeLayout
+        android:id="@+id/container_user_info"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorBackground"

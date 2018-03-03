@@ -1,4 +1,4 @@
-package blog.ugurcan.app;
+package blog.ugurcan.app.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -6,12 +6,15 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
+import blog.ugurcan.app.R;
 import blog.ugurcan.firedroid.FireDroid;
 import blog.ugurcan.firedroid.FireDroidActivity;
 import blog.ugurcan.firedroid.auth.LogoutListener;
@@ -83,6 +86,8 @@ public class HomeActivity extends FireDroidActivity implements LogoutListener {
         textviewUserEmail.setText(FireDroid.auth().getUserEmail());
         textviewUserPhone.setText(FireDroid.auth().getUserPhone());
         textviewAuthType.setText(FireDroid.auth().getAuthType().toString());
+
+        containerUserInfo.setVisibility(FireDroid.auth().isLoggedIn() ? View.VISIBLE : View.GONE);
     }
 
     private void updateLoginButton() {
@@ -100,6 +105,8 @@ public class HomeActivity extends FireDroidActivity implements LogoutListener {
         startActivity(new Intent(this, DbActivity.class));
     }
 
+    @BindView(R.id.container_user_info)
+    RelativeLayout containerUserInfo;
     @BindView(R.id.textview_user_display_name)
     TextView textviewUserDisplayName;
     @BindView(R.id.textview_user_email)

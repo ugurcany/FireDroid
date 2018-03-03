@@ -1,4 +1,4 @@
-package blog.ugurcan.app;
+package blog.ugurcan.app.activity;
 
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -7,11 +7,14 @@ import android.util.Log;
 
 import com.dd.processbutton.iml.ActionProcessButton;
 
+import blog.ugurcan.app.data.DbObject;
+import blog.ugurcan.app.R;
 import blog.ugurcan.firedroid.FireDroid;
 import blog.ugurcan.firedroid.FireDroidActivity;
 import blog.ugurcan.firedroid.db.ChildDataChangeListener;
 import blog.ugurcan.firedroid.db.DataChangeListener;
 import blog.ugurcan.firedroid.db.DbOperationListener;
+import blog.ugurcan.firedroid.db.SubscriptionConfig;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -21,8 +24,8 @@ import butterknife.OnClick;
 public class DbActivity extends FireDroidActivity
         implements DbOperationListener, DataChangeListener, ChildDataChangeListener {
 
-    private static final String PATH_TO_DATALIST = "allowed/auth-user/data-list";
-    private static final String PATH_TO_DATA = "allowed/auth-user/data";
+    private static final String PATH_TO_DATALIST = "auth-user/data-list";
+    private static final String PATH_TO_DATA = "auth-user/data";
 
     private static final int BUTTON_ACTIVE = 0;
     private static final int BUTTON_IN_PROGRESS = 1;
@@ -49,7 +52,7 @@ public class DbActivity extends FireDroidActivity
             return;
 
         updateDbOpButton(button, BUTTON_IN_PROGRESS);
-        FireDroid.db().writeTo(R.id.button_write, PATH_TO_DATA, dbObject);
+        FireDroid.db().writeTo(button.getId(), PATH_TO_DATA, dbObject);
     }
 
     @OnClick(R.id.button_push_under)
@@ -58,7 +61,7 @@ public class DbActivity extends FireDroidActivity
             return;
 
         updateDbOpButton(button, BUTTON_IN_PROGRESS);
-        FireDroid.db().pushUnder(R.id.button_push_under, PATH_TO_DATALIST, dbObject);
+        FireDroid.db().pushUnder(button.getId(), PATH_TO_DATALIST, dbObject);
     }
 
     @OnClick(R.id.button_read)
@@ -67,7 +70,7 @@ public class DbActivity extends FireDroidActivity
             return;
 
         updateDbOpButton(button, BUTTON_IN_PROGRESS);
-        FireDroid.db().readFrom(R.id.button_read, PATH_TO_DATA, DbObject.class);
+        FireDroid.db().readFrom(button.getId(), PATH_TO_DATA, DbObject.class);
     }
 
     @OnClick(R.id.button_subscribe_to_data)
@@ -82,7 +85,13 @@ public class DbActivity extends FireDroidActivity
 
     @OnClick(R.id.button_subscribe_to_child_data)
     void onSubscribeToChildDataClicked(ActionProcessButton button) {
-        FireDroid.db().subscribeToChildDataChange(PATH_TO_DATALIST, DbObject.class);
+        FireDroid.db().subscribeToChildDataChange(PATH_TO_DATALIST, DbObject.class,
+                new SubscriptionConfig.Builder()
+                        //.limitToLast(2)
+                        .limitToFirst(3)
+                        .orderByChild("id")
+                        //.orderByKey()
+                        .build());
     }
 
     @OnClick(R.id.button_unsubscribe_from_child_data)
@@ -113,6 +122,7 @@ public class DbActivity extends FireDroidActivity
         Log.d(getName(), "onDbOperationFailed()"
                 + "\n" + "--Exception: " + exception);
 
+        //OP ID == BUTTON VIEW ID
         ActionProcessButton button = findViewById(opId);
         updateDbOpButton(button, BUTTON_ERROR);
 

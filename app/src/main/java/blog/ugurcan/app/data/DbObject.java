@@ -1,4 +1,4 @@
-package blog.ugurcan.app;
+package blog.ugurcan.app.data;
 
 import blog.ugurcan.firedroid.db.FireDbObject;
 

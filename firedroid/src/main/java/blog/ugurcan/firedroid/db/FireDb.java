@@ -9,6 +9,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -137,19 +138,21 @@ public class FireDb implements _IFireDb {
     }
 
     @Override
-    public <T> void subscribeToChildDataChange(String path, Class<T> dataClass) {
+    public <T> void subscribeToChildDataChange(String path, Class<T> dataClass,
+                                               SubscriptionConfig config) {
         if (childDataChangeListener == null)
             throw new IllegalStateException("Class does not implement " +
                     ChildDataChangeListener.class.getSimpleName() + "!");
 
-        DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference(path);
-        Subscription<T> subsc = new Subscription<T>(dbRef, dataClass, true);
+        Query query = FirebaseDatabase.getInstance().getReference(path);
+        query = setSubscriptionConfig(query, config);
+        Subscription<T> subsc = new Subscription<T>(query, dataClass, true);
 
         if (!subscriptions.contains(subsc)) {
             subscriptions.add(subsc);
 
-            dbRef.removeEventListener((ChildEventListener) this);
-            dbRef.addChildEventListener(this);
+            query.removeEventListener((ChildEventListener) this);
+            query.addChildEventListener(this);
         } else {
             childDataChangeListener.onSubscriptionFailed(new Exception("Already subscribed!"));
         }
@@ -177,9 +180,9 @@ public class FireDb implements _IFireDb {
     public void startSubscriptions() {
         for (Subscription subsc : subscriptions) {
             if (dataChangeListener != null && !subsc.isChildSubsc())
-                subsc.getDbReference().addValueEventListener(this);
+                subsc.getQuery().addValueEventListener(this);
             if (childDataChangeListener != null && subsc.isChildSubsc())
-                subsc.getDbReference().addChildEventListener(this);
+                subsc.getQuery().addChildEventListener(this);
         }
     }
 
@@ -187,9 +190,9 @@ public class FireDb implements _IFireDb {
     public void endSubscriptions() {
         for (Subscription subsc : subscriptions) {
             if (dataChangeListener != null && !subsc.isChildSubsc())
-                subsc.getDbReference().removeEventListener((ValueEventListener) this);
+                subsc.getQuery().removeEventListener((ValueEventListener) this);
             if (childDataChangeListener != null && subsc.isChildSubsc())
-                subsc.getDbReference().removeEventListener((ChildEventListener) this);
+                subsc.getQuery().removeEventListener((ChildEventListener) this);
         }
     }
 
@@ -256,6 +259,26 @@ public class FireDb implements _IFireDb {
             return subscriptions.get(index);
         }
         return null;
+    }
+
+    private Query setSubscriptionConfig(Query query, SubscriptionConfig config) {
+        if (config != null) {
+            //LIMITING
+            if (config.getLimitToFirst() != null) {
+                query = query.limitToFirst(config.getLimitToFirst());
+            } else if (config.getLimitToLast() != null) {
+                query = query.limitToLast(config.getLimitToLast());
+            }
+
+            //ORDERING
+            if (config.getOrderByChildPath() != null) {
+                query = query.orderByChild(config.getOrderByChildPath());
+            } else if (config.getOrderByKey() != null) {
+                query = query.orderByKey();
+            }
+        }
+
+        return query;
     }
 
     /*

@@ -73,6 +73,9 @@ public class FireDroid {
         return new FireDb.Initializer();
     }
 
+    /*
+     * APP CONTEXT & CURRENT ACTIVITY (FOR INTERNAL USAGES)
+     */
     public static Context appContext() {
         return mAppContext.get();
     }
@@ -81,6 +84,9 @@ public class FireDroid {
         return mCurrentActivity.get();
     }
 
+    /*
+     * CURRENT ACTIVITY
+     */
     static void setCurrentActivity(Activity activity) {
         nullifyCurrentActivity();
         mCurrentActivity = new WeakReference<>(activity);
@@ -93,6 +99,9 @@ public class FireDroid {
         }
     }
 
+    /*
+     * LISTENERS
+     */
     static void setListeners(Activity activity) {
         nullifyListeners();
         if (activity instanceof LoginListener) {

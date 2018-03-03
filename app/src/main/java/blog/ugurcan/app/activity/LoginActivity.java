@@ -1,10 +1,11 @@
-package blog.ugurcan.app;
+package blog.ugurcan.app.activity;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.widget.Toast;
 
+import blog.ugurcan.app.R;
 import blog.ugurcan.firedroid.FireDroid;
 import blog.ugurcan.firedroid.FireDroidActivity;
 import blog.ugurcan.firedroid.auth.LoginListener;

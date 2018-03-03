@@ -1,57 +1,44 @@
 package blog.ugurcan.firedroid.db;
 
-import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.Query;
 
 /**
  * Created by ugurcan on 26.01.2018.
  */
 class Subscription<T> {
 
-    private DatabaseReference dbReference;
+    private Query query;
     private Class<T> dataClass;
     private boolean isChildSubsc;
 
-    public Subscription(DatabaseReference dbReference) {
-        this.dbReference = dbReference;
+    Subscription(Query query) {
+        this.query = query;
         this.dataClass = null;
         this.isChildSubsc = false;
     }
 
-    public Subscription(DatabaseReference dbReference, Class<T> dataClass, boolean isChildSubsc) {
-        this.dbReference = dbReference;
+    Subscription(Query query, Class<T> dataClass, boolean isChildSubsc) {
+        this.query = query;
         this.dataClass = dataClass;
         this.isChildSubsc = isChildSubsc;
     }
 
-    public DatabaseReference getDbReference() {
-        return dbReference;
-    }
-
-    public void setDbReference(DatabaseReference dbReference) {
-        this.dbReference = dbReference;
+    public Query getQuery() {
+        return query;
     }
 
     public Class<T> getDataClass() {
         return dataClass;
     }
 
-    public void setDataClass(Class<T> dataClass) {
-        this.dataClass = dataClass;
-    }
-
     public boolean isChildSubsc() {
         return isChildSubsc;
-    }
-
-    public void setChildSubsc(boolean childSubsc) {
-        isChildSubsc = childSubsc;
     }
 
     @Override
     public boolean equals(Object obj) {
         return obj instanceof Subscription
-                && dbReference != null
-                && ((Subscription) obj).dbReference != null
-                && dbReference.equals(((Subscription) obj).dbReference);
+                && query != null && ((Subscription) obj).query != null
+                && query.getRef().equals(((Subscription) obj).query.getRef());
     }
 }
