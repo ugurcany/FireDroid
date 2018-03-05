@@ -141,8 +141,8 @@ FireDroid.db().subscribeToChildDataChange("path/to/data-list", DbObject.class,
 		/* OPTIONAL */
 		new SubscriptionConfig.Builder()
 			.limitToFirst(limit) //OR .limitToLast(limit)
-        	.orderByChild("field_used_to_order") //OR .orderByKey()
-        	.build());
+			.orderByChild("field_used_to_order") //OR .orderByKey()
+			.build());
 ```
 
 * To **unsubscribe** from child data changes under a path, you simply call:
