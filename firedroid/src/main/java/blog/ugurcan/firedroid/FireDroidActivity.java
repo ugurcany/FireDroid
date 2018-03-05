@@ -18,13 +18,11 @@ public abstract class FireDroidActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //Log.d(getName(), "onCreate()");
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        //Log.d(getName(), "onResume()");
 
         FireDroid.setCurrentActivity(this);
         FireDroid.setListeners(this);
@@ -36,7 +34,6 @@ public abstract class FireDroidActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        //Log.d(getName(), "onPause()");
 
         FireDroid._auth().removeAuthStateListener();
         FireDroid._db().endSubscriptions();

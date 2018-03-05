@@ -137,7 +137,12 @@ Before subscribing to child data changes under a path, have your activity implem
 
 * To **subscribe** to child data changes under a path, you simply call:
 ```java
-FireDroid.db().subscribeToChildDataChange("path/to/data-list", DbObject.class);
+FireDroid.db().subscribeToChildDataChange("path/to/data-list", DbObject.class, 
+		/* OPTIONAL */
+		new SubscriptionConfig.Builder()
+			.limitToFirst(limit) //OR .limitToLast(limit)
+        	.orderByChild("field_used_to_order") //OR .orderByKey()
+        	.build());
 ```
 
 * To **unsubscribe** from child data changes under a path, you simply call:
