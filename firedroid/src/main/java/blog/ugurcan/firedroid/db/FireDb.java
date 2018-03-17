@@ -264,17 +264,23 @@ public class FireDb implements _IFireDb {
     private Query setSubscriptionConfig(Query query, SubscriptionConfig config) {
         if (config != null) {
             //LIMITING
-            if (config.getLimitToFirst() != null) {
-                query = query.limitToFirst(config.getLimitToFirst());
-            } else if (config.getLimitToLast() != null) {
-                query = query.limitToLast(config.getLimitToLast());
+            if (config.getLimitType() != null) {
+                if (config.getLimitType() == SubscriptionConfig.LimitType.FIRST) {
+                    query = query.limitToFirst(config.getLimit());
+                } else if (config.getLimitType() == SubscriptionConfig.LimitType.LAST) {
+                    query = query.limitToLast(config.getLimit());
+                }
             }
 
             //ORDERING
-            if (config.getOrderByChildPath() != null) {
-                query = query.orderByChild(config.getOrderByChildPath());
-            } else if (config.getOrderByKey() != null) {
-                query = query.orderByKey();
+            if (config.getOrderType() != null) {
+                if (config.getOrderType() == SubscriptionConfig.OrderType.KEY) {
+                    query = query.orderByKey();
+                } else if (config.getOrderType() == SubscriptionConfig.OrderType.VALUE) {
+                    query = query.orderByValue();
+                } else if (config.getOrderType() == SubscriptionConfig.OrderType.CHILD) {
+                    query = query.orderByChild(config.getOrderByChildPath());
+                }
             }
         }
 

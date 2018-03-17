@@ -86,10 +86,8 @@ public class DbActivity extends FireDroidActivity
     @OnClick(R.id.button_subscribe_to_child_data)
     void onSubscribeToChildDataClicked(ActionProcessButton button) {
         SubscriptionConfig subscriptionConfig = new SubscriptionConfig.Builder()
-                //.limitToLast(2)
-                .limitToFirst(3)
-                .orderByChild("id")
-                //.orderByKey()
+                .limitTo(SubscriptionConfig.LimitType.LAST, 3)
+                .orderBy(SubscriptionConfig.OrderType.CHILD, "timestamp")
                 .build();
 
         FireDroid.db().subscribeToChildDataChange(PATH_TO_DATALIST, DbObject.class,

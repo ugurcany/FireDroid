@@ -140,8 +140,8 @@ Before subscribing to child data changes under a path, have your activity implem
 FireDroid.db().subscribeToChildDataChange("path/to/data-list", DbObject.class, 
 		/* OPTIONAL */
 		new SubscriptionConfig.Builder()
-			.limitToFirst(limit) //OR .limitToLast(limit)
-			.orderByChild("field_used_to_order") //OR .orderByKey()
+			.limitTo(limitType, limit) //LimitType = FIRST, LAST
+			.orderBy(orderType) //OrderType = KEY, VALUE, CHILD (set "orderByChildPath" param for CHILD type)
 			.build());
 ```
 
