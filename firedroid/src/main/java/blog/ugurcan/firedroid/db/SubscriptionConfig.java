@@ -17,13 +17,13 @@ public class SubscriptionConfig {
     private Integer limit;
 
     private OrderType orderType;
-    private String orderByChildPath;
+    private String orderByChildKey;
 
     SubscriptionConfig(SubscriptionConfig.Builder builder) {
         limitType = builder.limitType;
         limit = builder.limit;
         orderType = builder.orderType;
-        orderByChildPath = builder.orderByChildPath;
+        orderByChildKey = builder.orderByChildKey;
     }
 
     public LimitType getLimitType() {
@@ -38,8 +38,8 @@ public class SubscriptionConfig {
         return orderType;
     }
 
-    public String getOrderByChildPath() {
-        return orderByChildPath;
+    public String getOrderByChildKey() {
+        return orderByChildKey;
     }
 
 
@@ -49,7 +49,7 @@ public class SubscriptionConfig {
         private Integer limit;
 
         private OrderType orderType = null;
-        private String orderByChildPath = "";
+        private String orderByChildKey = "";
 
         public Builder limitTo(LimitType limitType, int limit) {
             this.limitType = limitType;
@@ -57,10 +57,10 @@ public class SubscriptionConfig {
             return this;
         }
 
-        public Builder orderBy(OrderType orderType, String... orderByChildPath) {
+        public Builder orderBy(OrderType orderType, String... orderByChildKey) {
             this.orderType = orderType;
-            if (orderByChildPath.length > 0)
-                this.orderByChildPath = orderByChildPath[0];
+            if (orderByChildKey.length > 0)
+                this.orderByChildKey = orderByChildKey[0];
             return this;
         }
 

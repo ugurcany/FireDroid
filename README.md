@@ -141,7 +141,7 @@ FireDroid.db().subscribeToChildDataChange("path/to/data-list", DbObject.class,
 		/* OPTIONAL */
 		new SubscriptionConfig.Builder()
 			.limitTo(limitType, limit) //LimitType = FIRST, LAST
-			.orderBy(orderType) //OrderType = KEY, VALUE, CHILD (set "orderByChildPath" param for CHILD type)
+			.orderBy(orderType) //OrderType = KEY, VALUE, CHILD (set "orderByChildKey" param for CHILD type)
 			.build());
 ```
 

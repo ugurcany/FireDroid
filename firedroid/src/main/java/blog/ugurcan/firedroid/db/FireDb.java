@@ -279,7 +279,7 @@ public class FireDb implements _IFireDb {
                 } else if (config.getOrderType() == SubscriptionConfig.OrderType.VALUE) {
                     query = query.orderByValue();
                 } else if (config.getOrderType() == SubscriptionConfig.OrderType.CHILD) {
-                    query = query.orderByChild(config.getOrderByChildPath());
+                    query = query.orderByChild(config.getOrderByChildKey());
                 }
             }
         }
